@@ -1,0 +1,41 @@
+.header {
+    /* background-color: white; */
+    user-select: none;
+}
+
+.header ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+
+    max-width: var(--max-width);
+    margin-inline: auto;
+}
+
+.header li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+
+    cursor: pointer;
+    height: 3.5rem;
+}
+
+.header .icon {
+    font-size: 2.3rem;
+}
+
+.header .usuario:hover {
+    text-decoration: underline;
+    text-underline-offset: .25rem;
+}
+
+@media (max-width: 500px) {
+    .hide-mobile {
+        display: none;
+    }
+}

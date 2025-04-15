@@ -1,0 +1,92 @@
+
+
+.main {
+    /* background-color: green; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5rem;
+
+    min-height: 85vh;
+}
+
+.article {
+    display: flex;
+    flex-direction: column;
+
+    min-width: var(--lista-width);
+    min-height: 85vh;
+    flex-grow: 1;
+
+    border: 1px solid lightgray;
+    border-radius: 1rem;
+}
+
+.esquerdo {
+    /* background-color: red; */
+}
+
+.direito {
+    /* background-color: purple; */
+}
+
+.head {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    border-radius: 1rem 1rem 0px 0px;
+
+    padding: 1rem 3rem;
+    min-width: var(--lista-width);
+
+    user-select: none;
+
+    /* background-color: red; */
+}
+
+.qtd-listas {
+    margin-left: auto;
+
+    background-color: rgba(255, 255, 255, 0.1);
+    width: 2ch;
+    height: 2ch;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 1rem;
+    padding: 1rem;
+
+    font-weight: 600;
+}
+
+.head .nome {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.nova-lista {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: .7rem 1rem;
+
+    min-width: var(--lista-width);
+
+    margin-top: auto;
+
+    cursor: pointer;
+    user-select: none;
+}
+
+.nova-lista:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 0px 0px 1rem 1rem;
+}
+
+@media (max-width: 1200px) {
+    .main {
+        padding: 10px;
+    }
+}
