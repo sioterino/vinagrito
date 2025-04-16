@@ -8,10 +8,14 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem;
+  padding: 1rem 2rem;
 
   max-width: var(--max-width);
   margin-inline: auto;
+}
+
+.header .logo {
+    height: 4rem;
 }
 
 .header li {
