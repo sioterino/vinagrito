@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="./css/global.css">
     <link rel="stylesheet" href="./css/header.css">
     <link rel="stylesheet" href="./css/listas-base.css">
+
+    <script src="./js/main.js" defer></script>
 </head>
 <body>
     <header class="header">
@@ -16,7 +18,7 @@
                 <img src="#" alt="" class="logo">
                 <h1 class="titulo hide-mobile">Vinagrito</p>
             </li>
-            <li>
+            <li class="user-li">
                 <p class="usuario user hide-mobile">Usuário</p>
                 <span class="icon user">account_circle</span>
             </li>
@@ -25,10 +27,10 @@
 
     <main class="main">
         <article class="article esquerdo fazendo">
-            <!-- LISTAS INCOMPLETAS -->
+            <!-- LISTAS PENDENTES -->
             <div class="head">
                 <span class="icon circle">circle</span>
-                <p class="nome">A Fazer</p>
+                <p class="nome">Pendentes</p>
                 <p class="qtd-listas">0</p>
             </div>
 
@@ -40,7 +42,7 @@
 
             <div class="nova-lista">
                 <span class="icon add">add</span>
-                <p>Criar Nova Lista de Tarefas</p>
+                <p>Criar nova lista</p>
             </div>
         </article>
 
@@ -48,7 +50,7 @@
             <!-- LISTAS COMPLETAS -->
             <div class="head">
                 <span class="icon circle">circle</span>
-                <p class="nome">Feitas</p>
+                <p class="nome">Completas</p>
                 <p class="qtd-listas">0</p>
             </div>
 
@@ -60,7 +62,7 @@
 
             <div class="nova-lista">
                 <span class="icon add">add</span>
-                <p>Criar Nova Lista de Tarefas</p>
+                <p>Criar nova lista</p>
             </div>
         </article>
     </main>
