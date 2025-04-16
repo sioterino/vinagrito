@@ -1,6 +1,6 @@
 class Utils {
 
-    static #listaIDS = []
+    static #listaIDS = [] // armazena todos os ids do sistema
 
     // RETORNA UM NOVO ID PARA TAREFAS E LISTAS
     static #geararID ( tipo ) {
@@ -45,5 +45,37 @@ class Utils {
 
     }
     
+
+
+    // RETORNA UM ELEMENTO NO DOM EM MENOS LINHAS
+    static newEl (tag, classes = null, textContent = null) {
+        // por padrão, o elemento não possui classe ou textContent
+
+        /*
+            COMO USAR:
+            Utils.newEl( 'p', 'desc', 'aqui fica escrito a descrição')
+            Utils.newEl( 'span', ['icon', 'close'], 'close')
+            Utils.newEl( 'div', 'wrapper')
+            Utils.newEl( 'li', null, 'item de uma lista')
+            Utils.newEl( 'ul')
+        */
+
+        const el = document.createElement( tag )
+
+        if ( Array.isArray(classes) ) {
+            classes.forEach(c => {
+                el.classList.add(c)
+            })
+
+        } else {
+            el.classList.add(classes)
+        }
+
+        if (textContent != null) {
+            el.textContent = textContent
+        }
+
+        return el
+    }
 }
 
