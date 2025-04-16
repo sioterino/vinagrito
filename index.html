@@ -5,19 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Vinagrito</title>
-    <link rel="icon" type="image/x-icon" href="./img/tomate.png">
+    <link rel="icon" type="image/x-icon" href="./img/pimentao-vermelho.png">
 
     <link rel="stylesheet" href="./css/global.css">
     <link rel="stylesheet" href="./css/header.css">
     <link rel="stylesheet" href="./css/listas-base.css">
+    <link rel="stylesheet" href="./css/dialog.css">
 
-    <script src="./js/main.js" defer></script>
+    <!-- <script src="./js/DOM.js" defer></script> -->
+    <script src="./js/main.js" type="module" defer></script>
+
 </head>
 <body>
     <header class="header">
         <ul>
             <li>
-                <img src="./img/tomate.png" alt="tomate do vinagrito" class="logo">
+                <img src="./img/pimentao-vermelho.png" alt="tomate do vinagrito" class="logo">
                 <h1 class="titulo hide-mobile">Vinagrito</p>
             </li>
             <li class="user-li">
@@ -61,12 +64,35 @@
                 <!-- JS SCRIPT IRÁ POPULAR AQUI -->
 
             </section>
-
-            <div class="nova-lista">
-                <span class="icon add">add</span>
-                <p>Criar nova lista</p>
-            </div>
         </article>
     </main>
+
+
+    <dialog>
+
+        <div class="wrapper criar-lista">
+            <h3>Criar Nova Lista</h3>
+            <form>
+                <label for="nome-criar-lista">
+                    Nome
+                    <input required type="text" name="nome-criar-lista" id="nome-criar-lista" autocomplete="off" spellcheck="false" placeholder="Lista sem nome">
+                </label>
+                <label class="select-label" for="cor-criar-lista">
+                    Cor
+                    <select required name="cor-criar-lista" id="cor-criar-lista">
+                        <option value="Vermelho" selected>Vermelho</option>
+                        <option value="Amarelo">Amarelo</option>
+                        <option value="Verde">Verde</option>
+                        <option value="Azul">Azul</option>
+                        <option value="Roxo">Roxo</option>
+                    </select>
+                    <span class="icon arrow">keyboard_arrow_up</span>
+                </label>
+                <button type="submit">Criar Lista</button>
+            </form>
+        </div>
+
+    </dialog>
+
 </body>
 </html>
