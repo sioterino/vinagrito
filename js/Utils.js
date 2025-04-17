@@ -3,7 +3,7 @@ class Utils {
     static #listaIDS = [] // armazena todos os ids do sistema
 
     // RETORNA UM NOVO ID PARA TAREFAS E LISTAS
-    static #geararID ( tipo ) {
+    static #gerarID ( tipo ) {
         // TAREFAS possuem início padrão de 67, enquanto LISTAS começam com 48
 
         // (Date.now()) : retorna um valor em milissegundos desde 01/01/1970
@@ -26,7 +26,7 @@ class Utils {
     static novoID ( tipo = 'tarefa' ) {
 
         // gera o id aléatório
-        let id = this.#geararID( tipo )
+        let id = this.#gerarID( tipo )
 
 
         while ( true ) {
@@ -39,7 +39,7 @@ class Utils {
             } else {
                 // caso esse ID ele já exista,
                 // um novo é gerado e o laço reinicia
-                id = this.#geararID( tipo )
+                id = this.#gerarID( tipo )
             }
         }
 
