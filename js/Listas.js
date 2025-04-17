@@ -1,9 +1,9 @@
 class Listas {
     // construtor das lista que recebe nome e cor como parametro
-    constructor(nome, cor) {
-        this.idTarefa = Utils.novoID('lista');
-        this.nome = this.nome;
-        this.cor = this.cor;
+    constructor(objeto) {
+        this.idLista = Utils.novoID('lista');
+        this.nome = objeto.nome;
+        this.cor = objeto.cor;
         this.tarefas = [];
     }
 
@@ -12,7 +12,7 @@ class Listas {
     }
 
     removerTarefa(idTarefa) {
-        this.tasks = this.tasks.filter(task => task.id !== taskId);
+        this.tarefas = this.tarefas.filter(tarefa => tarefa.IdTarefa !== idTarefa);
     }
 
     ordenarTarefa(criterio = 'none') {
@@ -26,7 +26,7 @@ class Listas {
           none: () => 0,
         };
       
-        return this.tasks.sort(sorters[criterio] || sorters['none']);
+        return this.tarefas.sort(sorters[criterio] || sorters['none']);
       }
       
 
@@ -40,24 +40,26 @@ class Listas {
     }
 
     apagartarefa(idTarefa, ) {
-       
+        this.removerTarefa(idTarefa);
     }
 
-    moverTarefa(idTarefa, lista) {
+
+    // refazer 
+    moverTarefa(idTarefa, listaDestino) {
         const tarefa = this.getTarefaByID(idTarefa);
         if(tarefa){
             this.removerTarefa(idTarefa);
-            tarefa.idLista = idListaDestino;
+           // tarefa.idLista = 
             idListaDestino.adicionarTarefa(this.tarefas);
         }
     }
 
     // retorna a tarefa com o ID correspondente
     getTarefaByID(idTarefa) {
-        return this.tarefas.find(tarefas=> tarefas.id === idTarefa); 
+        return this.tarefas.find(tarefas=> tarefa.IdTarefa === idTarefa); 
     }
 
     editarNomeLista(novoNome){
-        this.name = novoNome;
+        this.nome = novoNome;
     }
 }
