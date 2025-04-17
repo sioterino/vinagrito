@@ -1,13 +1,13 @@
 class tarefa {
-    constructor(nome, descricao, dataCriacao, dataPrazo, hora, prioridade, listaId) {
-        this.id = Utils.novoID('tarefa');
+    constructor(nome, descricao, dataCriacao, dataPrazo, hora, prioridade, idLista) {
+        this.idTarefa = Utils.novoID('tarefa');
         this.nome = nome;
         this.descricao = descricao;
         this.dataCriacao = dataCriacao;
         this.dataPrazo = dataPrazo;
         this.hora = hora;
         this.prioridade = prioridade;
-        this.listaId = listaId;
+        this.idLista = idLista;
         this.completa = false;
     }
 
