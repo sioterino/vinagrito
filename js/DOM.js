@@ -66,8 +66,9 @@ class DOM {
         document.querySelector('.esquerdo').querySelector('.qtd-listas').textContent = this.#qtdLista
 
 
+        const criarTarfea = new Dialog(document.querySelector('.criar-tarefa-dialog'))
         // inicializa os eventListeners da lista
-        this.#listaInit(lista, obj)
+        this.#listaInit(lista, obj, criarTarfea)
     }
 
     // rederiza conteúdo interno da lista, como tarefas e botões necessários
@@ -102,7 +103,7 @@ class DOM {
     }
 
     // inicializa os eventListeners da lista
-    #listaInit(lista, obj) {
+    #listaInit(lista, obj, criarTarfea) {
         // abre e fecha lista
         lista.addEventListener('click', e => {
             if (e.target.closest('.more') || e.target.closest('.more-dropdown')) return
@@ -129,6 +130,8 @@ class DOM {
         lista.querySelector('.more-del').addEventListener('click', e => {
             console.log(obj.idLista)
             lista.remove()
+            this.#qtdLista--
+            document.querySelector('.esquerdo').querySelector('.qtd-listas').textContent = this.#qtdLista
         })
 
         lista.querySelector('.more-edit').addEventListener('click', e => {
@@ -141,8 +144,8 @@ class DOM {
             console.log('MOVER LISTA')
         })
 
-        const criarTarfea = new Dialog(document.querySelector('.criar-tarefa-dialog'))
-        criarTarfea.new('.nova-tarefa', obj.idLista)
+        
+        criarTarfea.new(lista.querySelector('.nova-tarefa'), obj.idLista)
 
     }
 
@@ -180,23 +183,19 @@ class Dialog {
     }
 
     // inicializa os eventListeners de cada dialog de acordo com a classe
-    new(classe, idLista) {
-        // define o id lista CASO o dialog esteja criando uma TAREFA nova
-        if (classe === '.nova-tarefa') {
+    new(triggerElement, idLista) {
+        if (triggerElement.classList.contains('nova-tarefa')) {
             this.#idLista = idLista
         }
-
-        // abre o modal de criar nova lista/tarefa
-        document.querySelector(classe).addEventListener('click', () => this.dialog.showModal())
-
-        // fecha o modal ao crlicar fora do modal
+    
+        triggerElement.addEventListener('click', () => this.dialog.showModal())
+    
         this.dialog.addEventListener('click', e => this.#fecharModal(e))
-
-        // fecha e captura os inputs quando o forms é enviado
+    
         this.dialog.querySelectorAll('form').forEach(form => {
             form.addEventListener('submit', e => this.#formSubmit(e))
         })
-    }
+    }    
 
     #fecharModal(e) {
         // fecha modal somente se a pessoa clicar fora da div que contem o forms
@@ -216,6 +215,7 @@ class Dialog {
 
         // cria e renderiza na tela a nova lista/tarefa
         const formData = this.#getContent()
+        console.log(formData)
         
         // cria NOVA LISTA caso seja a ORIGEM do
         // forms seja do DIALOG seja NOVA-LISTA
@@ -226,7 +226,7 @@ class Dialog {
         // cria NOVA TAREDA caso seja a ORIGEM do
         // forms seja do DIALOG seja NOVA-TAREFA
         else if (formData.func === 'nova-tarefa') {   
-            this.#dom.newList(new Lista(formData))
+            // this.#dom.newList(new Lista(formData))
         }
 
         this.dialog.close() // fecha o modal
