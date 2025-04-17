@@ -11,7 +11,7 @@ document.querySelector('body').addEventListener('click', e => {
     console.log(e.target)
 })
 
-// const dom = new DOM()
-// dom.newList( new Lista({ nome: 'teste 1', cor: 'verde' }) )
-// dom.newList( new Lista({ nome: 'teste 2', cor: 'roxo' }) )
-// dom.newList( new Lista({ nome: 'teste 3', cor: 'amarelo' }) )
+const dom = new DOM()
+dom.newList( new Lista({ nome: 'teste 1', cor: 'verde' }) )
+dom.newList( new Lista({ nome: 'teste 2', cor: 'roxo' }) )
+dom.newList( new Lista({ nome: 'teste 3', cor: 'amarelo' }) )
