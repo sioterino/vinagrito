@@ -1,6 +1,10 @@
 // AQUI FICA A IMPLEMENTAÇÃO DAS CLASSES EU ACHO KKKKK
 // objetivo aqui é fazer só a importação desse arquivo para dentro do html
 
-import { DOM } from "./DOM.js"
-const dialog = document.querySelector('dialog')
-const dom = new DOM(dialog)
+import { Dialog } from "./DOM.js"
+
+const criarLista = new Dialog(document.querySelector('.criar-lista-dialog'))
+criarLista.new('.nova-lista')
+
+const criarTarfea = new Dialog(document.querySelector('.criar-tarefa-dialog'))
+criarTarfea.new('.nova-tarefa')
