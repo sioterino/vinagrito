@@ -9,6 +9,7 @@ class tarefa {
         this.prioridade = prioridade;
         this.idLista = idLista;
         this.completa = false;
+        this.isShown = true;
     }
 
     tarefaCompleta() {
