@@ -3,6 +3,9 @@
 
 :root {
     --fundo: #000120;
+    --backdrop: #00012080;
+
+    --dialog-fundo: #0f1825;
 
     --vermelho: #fa4549;
     --amarelo: #e7a100;

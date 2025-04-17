@@ -79,6 +79,8 @@
 
     cursor: pointer;
     user-select: none;
+
+    transition: all .1s ease-in-out;
 }
 
 .nova-lista:hover {
