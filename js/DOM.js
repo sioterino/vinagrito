@@ -75,8 +75,11 @@ class DOM {
     #insideLista() {
         const inside = Utils.newEl('div', ['content', 'hide'], null, null)
 
+        
         const divFilter = Utils.newEl('div', 'filtros')
         
+        const selectWrapper = Utils.newEl('div', 'select-wrapper')
+
         const filterWrapper1 = Utils.newEl('div', 'filter-wrapper')
         const filter = Utils.newEl('select', ['select-filter', 'filtros-select'], null, null)
         const filOpt1 = Utils.newEl('option', null, null, 'Todos')
@@ -96,7 +99,16 @@ class DOM {
         const arrow2 = Utils.newEl('span', ['icon', 'arrow'], null, 'keyboard_arrow_up')
         filterWrapper2.append(order, arrow2)
 
-        divFilter.append(filterWrapper1, filterWrapper2)
+        selectWrapper.append(filterWrapper1, filterWrapper2)
+
+        const search = Utils.newEl('div', 'searchbar')
+        const lupa = Utils.newEl('span', ['icon', 'glass'], null, 'search')
+        const bar = Utils.newEl('input')
+        bar.placeholder = 'Pesquisar'
+
+        search.append(lupa, bar)
+        divFilter.append(selectWrapper, search)
+
 
         // botão de criar nova tarefa
         const novaTarefa = Utils.newEl('div', ['botao-criar', 'nova-tarefa'], null, null)
