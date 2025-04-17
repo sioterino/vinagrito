@@ -117,7 +117,7 @@
     background-color: rgba(255, 255, 255, .1);
 }
 
-.filter:active {
+.filtros-select:active {
     background-color: rgba(255, 255, 255, .2);
 }
 
@@ -127,6 +127,22 @@
 
 .select-order {
     flex-grow: 1;
+}
+
+.filter-wrapper {
+    position: relative;
+}
+
+.filter-wrapper .arrow {
+    position: absolute;
+    right: 5%;
+    font-weight: 400;
+
+    transition: transform .2s ease-in-out;
+}
+
+.filtros-select:active ~ .arrow {
+    transform: rotate(180deg);
 }
 
 

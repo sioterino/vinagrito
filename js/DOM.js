@@ -77,20 +77,26 @@ class DOM {
 
         const divFilter = Utils.newEl('div', 'filtros')
         
+        const filterWrapper1 = Utils.newEl('div', 'filter-wrapper')
         const filter = Utils.newEl('select', ['select-filter', 'filtros-select'], null, null)
         const filOpt1 = Utils.newEl('option', null, null, 'Todos')
         const filOpt2 = Utils.newEl('option', null, null, 'Pendentes')
         const filOpt3 = Utils.newEl('option', null, null, 'Ccompletos')
         filter.append(filOpt1, filOpt2, filOpt3)
+        const arrow1 = Utils.newEl('span', ['icon', 'arrow'], null, 'keyboard_arrow_up')
+        filterWrapper1.append(filter, arrow1)
         
+        const filterWrapper2 = Utils.newEl('div', 'filter-wrapper')
         const order = Utils.newEl('select', ['select-order', 'filtros-select'], null, null)
         const ordOpt1 = Utils.newEl('option', null, null, 'Mais Importante')
         const ordOpt2 = Utils.newEl('option', null, null, 'Menos Importate')
         const ordOpt3 = Utils.newEl('option', null, null, 'Menor Prazo')
         const ordOpt4 = Utils.newEl('option', null, null, 'Maior Prazo')
         order.append(ordOpt1, ordOpt2, ordOpt3, ordOpt4)
+        const arrow2 = Utils.newEl('span', ['icon', 'arrow'], null, 'keyboard_arrow_up')
+        filterWrapper2.append(order, arrow2)
 
-        divFilter.append(filter, order)
+        divFilter.append(filterWrapper1, filterWrapper2)
 
         // botão de criar nova tarefa
         const novaTarefa = Utils.newEl('div', ['botao-criar', 'nova-tarefa'], null, null)

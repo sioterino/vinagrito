@@ -102,6 +102,6 @@ dialog {
     color: #58a6ff;
   }
   
-  .select-label select:focus ~ .icon {
+  .select-label select:active ~ .icon {
     transform: rotate(180deg);
   }
