@@ -5,7 +5,6 @@ dialog {
     outline: none;
     border: none;
     min-width: 300px;
-    box-shadow: 4px 4px 16px 8px black;
   }
   
   dialog::backdrop {
