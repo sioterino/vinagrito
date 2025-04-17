@@ -20,7 +20,12 @@ class tarefa {
         this.completa = false;
     }
 
-    editarDetalhes({ descricao, dataPrazo, hora, prioridade }) {
+    toggleStatus(){
+        this.completa = !this.completa;
+    }
+
+    editarDetalhes({ nome, descricao, dataPrazo, hora, prioridade }) {
+        this.nome = nome;
         this.descricao = descricao;
         this.dataPrazo = dataPrazo;
         this.hora = hora;
@@ -29,7 +34,7 @@ class tarefa {
 
     tarefaAtrasada() {
         const dataAtual = new Date();
-        const dataPrazo = new Date(`${this.dataPrazo}T${this.hora}`);
+        const dataPrazo = new Date(`${this.data}T${this.hora}`);
         return !this.completa && dataPrazo < dataAtual;
     }
 }
