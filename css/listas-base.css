@@ -66,6 +66,49 @@
     font-weight: 600;
 }
 
+.searchbar {
+    background-color: rgba(255, 255, 255, 0.03);
+    margin-bottom: 1rem;
+}
+
+.buscar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 280px;
+    margin-inline: auto;
+    border-radius: 4rem;
+    padding: 0.5rem 1rem;
+
+    background-color: transparent;
+    transition: background-color 0.2s ease;
+    cursor: text;
+}
+
+.searchbar:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.searchbar:focus-within {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+
+.buscar input {
+    padding: .5rem 1rem;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    width: 200px;
+}
+
+.buscar input::placeholder {
+    padding-left: .5rem;
+    color: var(--azul-selecao-5);
+    font-size: 1rem;
+}
+
 .botao-criar {
     display: flex;
     align-items: center;

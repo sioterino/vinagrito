@@ -74,8 +74,22 @@ class DOM {
     #insideLista() {
         const inside = Utils.newEl('div', ['content', 'hide'], null, null)
 
+        const divFilter = Utils.newEl('div', 'filtros')
+        
+        const filter = Utils.newEl('select', ['select-filter', 'filtros-select'], null, null)
+        const filOpt1 = Utils.newEl('option', null, null, 'Todos')
+        const filOpt2 = Utils.newEl('option', null, null, 'Pendentes')
+        const filOpt3 = Utils.newEl('option', null, null, 'Ccompletos')
+        filter.append(filOpt1, filOpt2, filOpt3)
+        
+        const order = Utils.newEl('select', ['select-order', 'filtros-select'], null, null)
+        const ordOpt1 = Utils.newEl('option', null, null, 'Mais Importante')
+        const ordOpt2 = Utils.newEl('option', null, null, 'Menos Importate')
+        const ordOpt3 = Utils.newEl('option', null, null, 'Menor Prazo')
+        const ordOpt4 = Utils.newEl('option', null, null, 'Maior Prazo')
+        order.append(ordOpt1, ordOpt2, ordOpt3, ordOpt4)
 
-
+        divFilter.append(filter, order)
 
         // botão de criar nova tarefa
         const novaTarefa = Utils.newEl('div', ['botao-criar', 'nova-tarefa'], null, null)
@@ -83,7 +97,7 @@ class DOM {
         const novaTarefaP = Utils.newEl('p', null, null, 'Criar nova tarefa')
         novaTarefa.append(plus, novaTarefaP)
 
-        inside.append( novaTarefa )
+        inside.append( divFilter, novaTarefa )
         return inside
     }
 
@@ -112,6 +126,20 @@ class DOM {
             }
         })
 
+        lista.querySelector('.more-del').addEventListener('click', e => {
+            console.log(obj.idLista)
+            lista.remove()
+        })
+
+        lista.querySelector('.more-edit').addEventListener('click', e => {
+            console.log(obj.idLista)
+            console.log('EDITAR LISTA')
+        })
+
+        lista.querySelector('.more-del').addEventListener('click', e => {
+            console.log(obj.idLista)
+            console.log('MOVER LISTA')
+        })
 
         const criarTarfea = new Dialog(document.querySelector('.criar-tarefa-dialog'))
         criarTarfea.new('.nova-tarefa', obj.idLista)
@@ -125,17 +153,18 @@ class DOM {
         // fecha listas que estiverem abertas
         listas.forEach(l => {
             const alvo = l.querySelector('.content')
-
+            const info = l.querySelector('.lista-info')
             if (!alvo.classList.contains('hide')) {
                 alvo.classList.add('hide')
+                info.classList.remove('hide')
             }
 
             if (l.id === idLista) {
                 alvo.classList.remove('hide')
+                info.classList.add('hide')
             }
 
         })
-
     }
 
 }
