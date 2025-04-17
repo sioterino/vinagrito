@@ -1,6 +1,6 @@
 import { Utils } from "./Utils.js"
 
-class tarefa {
+class Tarefa {
     constructor(nome, descricao, dataCriacao, dataPrazo, hora, prioridade, idLista) {
         this.idTarefa = Utils.novoID('tarefa');
         this.nome = nome;
@@ -41,3 +41,4 @@ class tarefa {
     }
 }
 
+export { Tarefa }
