@@ -1,3 +1,5 @@
+import { Utils } from "./Utils.js"
+
 class tarefa {
     constructor(nome, descricao, dataCriacao, dataPrazo, hora, prioridade, idLista) {
         this.idTarefa = Utils.novoID('tarefa');

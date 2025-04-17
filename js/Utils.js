@@ -48,8 +48,8 @@ class Utils {
 
 
     // RETORNA UM ELEMENTO NO DOM EM MENOS LINHAS
-    static newEl (tag, classes = null, textContent = null) {
-        // por padrão, o elemento não possui classe ou textContent
+    static newEl (tag, classes = null, id = null, textContent = null) {
+        // por padrão, o elemento não possui classe, id ou textContent
 
         /*
             COMO USAR:
@@ -71,6 +71,10 @@ class Utils {
             el.classList.add(classes)
         }
 
+        if (id != null) {
+            el.id = id
+        }
+
         if (textContent != null) {
             el.textContent = textContent
         }
@@ -79,3 +83,4 @@ class Utils {
     }
 }
 
+export { Utils }

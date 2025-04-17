@@ -1,3 +1,4 @@
+import { Utils } from "./Utils.js"
 class Listas {
     // construtor das lista que recebe nome e cor como parametro
     constructor(objeto) {
