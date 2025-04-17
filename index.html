@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="./css/global.css">
     <link rel="stylesheet" href="./css/header.css">
     <link rel="stylesheet" href="./css/listas-base.css">
+    <link rel="stylesheet" href="./css/lista.css">
     <link rel="stylesheet" href="./css/dialog.css">
 
     <script src="./js/main.js" type="module" defer></script>
@@ -44,7 +45,7 @@
 
             </section>
 
-            <div class="nova-lista nova-tarefa">
+            <div class="botao-criar nova-lista">
                 <span class="icon add">add</span>
                 <p>Criar nova lista</p>
             </div>
@@ -67,7 +68,7 @@
     </main>
 
 
-    <dialog class="criar-lista-dialog">
+    <dialog id="nova-lista" class="criar-lista-dialog">
         <div class="wrapper criar-lista">
             <h3>Criar Nova Lista</h3>
             <form>
@@ -91,7 +92,7 @@
         </div>
     </dialog>
 
-    <dialog class="criar-tarefa-dialog">
+    <dialog id="nova-tarefa" class="criar-tarefa-dialog">
         <div class="wrapper criar-tarefa">
             <h3>Criar Nova Tarefa</h3>
             <form>

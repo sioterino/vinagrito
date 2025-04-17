@@ -1,6 +1,6 @@
 .lista {
     background-color: rgba(255, 255, 255, .05);
-    border: 1px solid var(--azul-selecao-0);
+    border: 1px solid transparent;
     border-radius: 1rem;
     border-radius: .5rem;
     padding: 1rem;
@@ -11,6 +11,17 @@
     gap: 1.5rem;
 
     margin-bottom: 1rem;
+
+    position: relative;
+}
+
+.lista:hover {
+    cursor: pointer;
+
+}
+
+.lista-nome {
+    font-size: 1.3rem;
 }
 
 .lista-head,
@@ -25,13 +36,15 @@
 }
 
 .lista .more {
+    padding-inline: .45rem;
     margin-left: auto;
     font-weight: 400;
     cursor: pointer;
+    border: 1px solid transparent;
 }
 
 .lista .circle {
-    font-size: 1rem;
+    font-size: 1.5rem;
     margin-bottom: 1px;
 }
 
@@ -40,8 +53,101 @@
 }
 
 .lista-status {
-    background-color: rgba(255, 255, 255, .05);
-    border: 1px solid var(--azul-selecao-0);
+    background-color: rgba(255, 255, 255, .1);
     border-radius: 2rem;
     padding: .5rem 1rem .4rem;
+}
+
+.more-dropdown {
+    position: absolute;
+    z-index: 100;
+    width: fit-content;
+    background-color: var(--fundo);
+    border-radius: 1rem;
+    border: 1px solid var(--azul-selecao-5);
+    padding: 1rem;
+
+    top: 4rem;
+    right: 1rem;
+}
+
+.more-li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: .5rem;
+}
+
+.more-li:hover p {
+    text-decoration: underline;
+    text-underline-offset: .3rem;
+}
+
+.more-li:last-child {
+    margin-bottom: 0px;
+}
+
+.more-dropdown .icon {
+    font-size: 1rem;
+}
+
+
+/* 
+
+        CORES
+
+*/
+
+
+.vermelho {
+    color: var(--vermelho);
+}
+.amarelo {
+    color: var(--amarelo);
+}
+.verde {
+    color: var(--verde);
+}
+.azul {
+    color: var(--azul);
+}
+.roxo {
+    color: var(--roxo);
+}
+
+.vermelho-fundo {
+    background-color: var(--vermelho-escuro);
+}
+.amarelo-fundo {
+    background-color: var(--amarelo-escuro);
+}
+.verde-fundo {
+    background-color: var(--verde-escuro);
+}
+.azul-fundo {
+    background-color: var(--azul-escuro);
+}
+.roxo-fundo {
+    background-color: var(--roxo-escuro);
+}
+
+.vermelho-borda:hover {
+    border: 1px solid var(--vermelho);
+}
+.amarelo-borda:hover {
+    border: 1px solid var(--amarelo);
+}
+.verde-borda:hover {
+    border: 1px solid var(--verde);
+}
+.azul-borda:hover {
+    border: 1px solid var(--azul);
+}
+.roxo-borda:hover {
+    border: 1px solid var(--roxo);
+}
+
+.hide {
+    display: none;
 }
