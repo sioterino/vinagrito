@@ -1,38 +1,48 @@
-class DOM {
+class Dialog {
     constructor(dialog) {
         this.dialog = dialog
-        this.init()
     }
 
-    init() {
-        console.log('working init')
-        document.querySelector('.nova-lista').addEventListener('click', () => {
-            this.dialog.showModal()
-        })
+    new(tag) {
+        document.querySelector(tag).addEventListener('click', () => this.dialog.showModal())
 
-        this.dialog.addEventListener('click', e => this.fecharModal(e))
+        this.dialog.addEventListener('click', e => this.#fecharModal(e))
 
         this.dialog.querySelectorAll('form').forEach(form => {
-            form.addEventListener('submit', e => this.formSubmit(e))
+            form.addEventListener('submit', e => this.#formSubmit(e))
         })
     }
 
-    fecharModal(e) {
+    #fecharModal(e) {
         if (e.target.tagName.toLowerCase() === 'dialog') {
             this.dialog.close()
-            this.resetForm()
+            this.#resetForm()
         }
     }
 
-    formSubmit(e) {
+    #formSubmit(e) {
         e.preventDefault()
         this.dialog.close()
+        const input = this.#getContent()
+        console.log(input)
         e.target.reset()
     }
 
-    resetForm() {
+    #resetForm() {
         this.dialog.querySelectorAll('form').forEach(form => form.reset())
     }
+
+    #getContent() {
+        const data = new FormData(this.dialog.querySelector('form'))
+        const inputs = {}
+        data.forEach( (val, key) => {
+            inputs[key] = val
+        })
+
+        return inputs
+    }
+
+
 }
 
-export { DOM }
+export { Dialog }
