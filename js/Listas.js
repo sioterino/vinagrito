@@ -12,15 +12,26 @@ class Listas {
     }
 
     removerTarefa(idTarefa) {
-
+        this.tasks = this.tasks.filter(task => task.id !== taskId);
     }
 
-    ordenaTarefa(criterio) {
+    ordenarTarefa(criterio = 'none') {
+        const sorters = {
+          dataCrescente: (a, b) => new Date(a.date) - new Date(b.date),
+          dataDecrescente: (a, b) => new Date(b.date) - new Date(a.date),
+          prioridadeCrescente: (a, b) => a.prioridade - b.prioridade,
+          prioridadeDescrescente: (a, b) => b.prioridade- a.prioridade,
+          descriçãoMaior: (a, b) => a.descrição.length - b.descrição.length,  
+          descriçãoMenor: (a, b) => b.descrição.length - a.descrição.length,  
+          none: () => 0,
+        };
+      
+        return this.tasks.sort(sorters[criterio] || sorters['none']);
+      }
+      
 
-    }
-
-    filtraTarefa(tipo) {
-
+    filtrarTarefa(filter = 'all') {
+       
     }
 
     editar(novoNome, novaCor) {
@@ -28,10 +39,25 @@ class Listas {
         this.cor = novaCor;
     }
 
-    apagatarefa() {
+    apagartarefa(idTarefa, ) {
+       
     }
 
-    moveTarefa(idTarefa, lista) {
+    moverTarefa(idTarefa, lista) {
+        const tarefa = this.getTarefaByID(idTarefa);
+        if(tarefa){
+            this.removerTarefa(idTarefa);
+            tarefa.idLista = idListaDestino;
+            idListaDestino.adicionarTarefa(this.tarefas);
+        }
     }
 
+    // retorna a tarefa com o ID correspondente
+    getTarefaByID(idTarefa) {
+        return this.tarefas.find(tarefas=> tarefas.id === idTarefa); 
+    }
+
+    editarNomeLista(novoNome){
+        this.name = novoNome;
+    }
 }
