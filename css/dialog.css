@@ -2,24 +2,18 @@ dialog {
   background-color: var(--branco);
   border-radius: 1rem;
   margin: auto;
-}
-
-dialog input,
-dialog button,
-dialog select,
-dialog {
   outline: none;
   border: none;
+}
+
+dialog .wrapper {
+  padding: 2rem;
 }
 
 dialog h3 {
     color: var(--azul-selecao-0);
     margin-bottom: 1rem;
     text-align: center;
-}
-
-dialog .wrapper {
-  padding: 2rem;
 }
 
 dialog form {  
@@ -37,12 +31,18 @@ dialog label {
 
 dialog input,
 dialog select,
-dialog button {
+dialog button,
+dialog textarea {
+    outline: none;
+    border: none;
+
     padding: .8rem 2rem;
     border: 2px solid lightgray;
     border-radius: .5rem;
     color: var(--preto);
+
     font-size: 1rem;
+    background-color: #fff;
 }
 
 dialog input::placeholder {
@@ -52,7 +52,8 @@ dialog input::placeholder {
 }
 
 dialog input:hover, dialog input:focus,
-dialog select:hover, dialog select:focus {
+dialog select:hover, dialog select:focus,
+dialog textarea:hover, dialog textarea:focus {
     border: 2px solid var(--azul-selecao-10);
 }
 
