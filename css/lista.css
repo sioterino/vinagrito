@@ -1,19 +1,16 @@
 .lista {
-    background-color: rgba(255, 255, 255, .05);
-
     border: 1px solid transparent;
     border-radius: 1rem;
     border-radius: .5rem;
 
     padding: 1rem;
 
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-
     position: relative;
 
-    width: 365px;
+    min-width: 270px;
+
+    break-inside: avoid;
+    margin-bottom: 1rem;
 }
 
 .lista:hover {
@@ -25,20 +22,26 @@
     font-size: 1.3rem;
 }
 
-.lista-head,
-.lista-info {
+.lista-head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.head-left,
+.head-right {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
-.lista-head {
+.head-left {
     gap: 1rem;
 }
 
 .lista .more {
     padding-inline: .45rem;
-    margin-left: auto;
     font-weight: 400;
     cursor: pointer;
     border: 1px solid transparent;
@@ -47,10 +50,6 @@
 .lista .circle {
     font-size: 1.5rem;
     margin-bottom: 1px;
-}
-
-.lista-info {
-    justify-content: space-between;
 }
 
 .lista-status {
@@ -70,6 +69,8 @@
 
     top: 4rem;
     right: 1rem;
+
+    break-inside: avoid;
 }
 
 .more-li {
@@ -124,7 +125,7 @@
     transition: transform .2s ease-in-out;
 }
 
-.filter-wrapper select:active ~ .arrow {
+.filter-wrapper select:focus ~ .arrow {
     transform: rotate(180deg);
   }
 
@@ -175,6 +176,12 @@
 .content input::placeholder{
     font-size: 1rem;
     padding-left: 1rem; 
+}
+
+.nova-tarefa {
+    padding: 1rem;
+    gap: .8rem;
+    justify-content: center;
 }
 
 /* 

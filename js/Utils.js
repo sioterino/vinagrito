@@ -62,25 +62,47 @@ class Utils {
 
         const el = document.createElement( tag )
 
-        if ( Array.isArray(classes) ) {
-            classes.forEach(c => {
-                el.classList.add(c)
-            })
-
-        } else {
-            el.classList.add(classes)
+        if (classes !== null) {
+            if ( Array.isArray(classes) ) {
+                classes.forEach(c => {
+                    el.classList.add(c)
+                })
+    
+            } else {
+                el.classList.add(classes)
+            }
         }
 
-        if (id != null) {
+        if (id !== null) {
             el.id = id
         }
 
-        if (textContent != null) {
+        if (textContent !== null) {
             el.textContent = textContent
         }
 
         return el
     }
+
+    static formatDate(input) {    
+        const data = new Date(input);
+    
+        if (isNaN(data)) {
+            console.log("Invalid date");
+        } else {
+            const optionsDate = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            const optionsTime = { hour: '2-digit', minute: '2-digit', hour12: true };
+    
+            const novaData = data.toLocaleDateString('pt-BR', optionsDate);
+            const novaHora = data.toLocaleTimeString('pt-BR', optionsTime);
+    
+            const brazilianDateTime = `${novaData} ${novaHora}`;
+    
+            return brazilianDateTime;
+        }
+    }
+    
+
 }
 
 export { Utils }
