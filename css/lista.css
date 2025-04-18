@@ -6,8 +6,6 @@
     border-radius: .5rem;
 
     padding: 1rem;
-    margin-inline: 1rem;
-    margin-bottom: 1rem;
 
     display: flex;
     flex-direction: column;
@@ -15,6 +13,7 @@
 
     position: relative;
 
+    width: 365px;
 }
 
 .lista:hover {
@@ -107,8 +106,6 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 1rem;
-
-    margin: auto;
 }
 
 .filter-wrapper {
