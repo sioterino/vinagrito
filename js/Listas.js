@@ -7,6 +7,8 @@ class Lista {
     this.nome = objeto.nome;
     this.cor = objeto.cor;
     this.tarefas = [];
+    this.ativo = true;
+    this.isShown = true;
   }
 
   adicionarTarefa(tarefa) {
