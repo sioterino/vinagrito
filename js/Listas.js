@@ -1,4 +1,4 @@
-import { Utils } from "./Utils.js";
+import { Utils } from "./Utils.js"
 
 class Lista {
   // construtor das lista que recebe nome e cor como parametro
@@ -20,15 +20,16 @@ class Lista {
     );
   }
 
-  // ordena as tarefas dependendo do critério que foi passado
+  //ordena as tarefas dependendo do critério que foi passado
   ordenarTarefa(criterio = "none") {
+    const parseDate = (str) => new Date(str); //É uma função arrow que recebe uma string str (que é a data da tarefa) e transforma em um objeto Date.
     const sorters = {
-      dataCrescente: (a, b) => new Date(a.date) - new Date(b.date),
-      dataDecrescente: (a, b) => new Date(b.date) - new Date(a.date),
-      prioridadeCrescente: (a, b) => a.prioridade - b.prioridade,
-      prioridadeDescrescente: (a, b) => b.prioridade - a.prioridade,
-      descriçãoMaior: (a, b) => a.descrição.length - b.descrição.length,
-      descriçãoMenor: (a, b) => b.descrição.length - a.descrição.length,
+      dataCrescente: (a, b) => parseDate(a.data) - parseDate(b.data),
+      dataDecrescente: (a, b) => parseDate(b.data) - parseDate(a.data),
+      prioridadeDescrescente: (a, b) => a.prioridade - b.prioridade,
+      prioridadeCrescente: (a, b) => b.prioridade - a.prioridade,
+      descriçãoMenor: (a, b) => a.descrição.length - b.descrição.length,
+      descriçãoMaior: (a, b) => b.descrição.length - a.descrição.length,
       none: () => 0, // não faz nada
     };
 
@@ -36,10 +37,8 @@ class Lista {
   }
 
   filtrarTarefas(filtros = {}) {
-    // desestrutura os filtros recebidos, se algum não for passado assume com uma string vazia 
+    // desestrutura os filtros recebidos, se algum não for passado assume com uma string vazia     const { descricao = "", data = "" } = filtros;
     const { descricao = "", data = "" } = filtros;
-
-
     return this.tarefas.filter((tarefa) => {
       let descricaoCorresponde = true;
       let dataCorresponde = true;
@@ -64,8 +63,16 @@ class Lista {
         dataCorresponde = dataTarefa === dataFiltro;
       }
 
-      // mostra a tarefa se pelo menos um dos filtros combinar
-      return descricaoCorresponde || dataCorresponde;
+      // retorna a tarefa se pelo menos um dos filtros combinar
+      if (descricao !== "" && data !== "") {
+        return descricaoCorresponde && dataCorresponde;
+      } else if (descricao !== "") {
+        return descricaoCorresponde;
+      } else if (data !== "") {
+        return dataCorresponde;
+      }
+
+      return true; // se nenhum filtro for passado retorna todas as tarefas
     });
   }
 
@@ -91,6 +98,4 @@ class Lista {
   }
 
 }
-
-
-export { Lista };
+export { Tarefa }
