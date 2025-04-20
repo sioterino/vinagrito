@@ -100,4 +100,4 @@ class Lista {
   }
 
 }
-export { Tarefa }
+export { Lista }
