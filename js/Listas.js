@@ -1,15 +1,17 @@
+import { Tarefa } from "./Tarefa.js";
 import { Utils } from "./Utils.js"
 
 class Lista {
   // construtor das lista que recebe nome e cor como parametro
-  constructor(objeto) {
-    this.idLista = Utils.novoID("lista");
-    this.nome = objeto.nome;
-    this.cor = objeto.cor;
-    this.tarefas = [];
-    this.ativo = true;
-    this.isShown = true;
+  constructor({ idLista, nome, cor, tarefas = [], ativo = true, isShown = true }) {
+    this.idLista = idLista || Utils.novoID("lista");
+    this.nome = nome;
+    this.cor = cor;
+    this.tarefas = tarefas.map(t => new Tarefa(t));
+    this.ativo = ativo;
+    this.isShown = isShown;
   }
+  
 
   adicionarTarefa(tarefa) {
     this.tarefas.push(tarefa);

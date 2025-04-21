@@ -21,13 +21,15 @@ class Controle {
   }
 
   //método para adicionar uma nova lista
-  adicionar(nome, cor) {
-    const novaLista = new Lista({ nome, cor });
+  adicionar(data) {
+    console.log(' novaLista ')
+    const novaLista = new Lista( data );
 
     novaLista.isShown = true;  //marca a lista como visível por padrão 
 
     this.listas.push(novaLista);  //adiciona no array
-    this.saveToLocalStorage();  //salva as listas no LocalStorage 
+    this.saveToLocalStorage();  //salva as listas no LocalStorage
+
 
     return novaLista;
   }
@@ -37,6 +39,7 @@ class Controle {
     const lista = this.listas.find(lista => lista.idLista === idLista);
 
     if (lista) {
+      lista.isShown = false;
       lista.ativo = false;  //marca a lista como inativa mas continua no LocalStorage
       this.saveToLocalStorage();
     }
@@ -52,34 +55,26 @@ class Controle {
     const listasSalvas = JSON.parse(localStorage.getItem('listas')) || [];  // array vazio se não existir nada salvo
 
     this.listas = listasSalvas
-      .filter(dados => dados.ativo)  //filtra apenas as listas ativas
-      .map(dados => {
-        const novaLista = new Lista(dados);
-        novaLista.idLista = dados.idLista;
-        novaLista.ativo = dados.ativo;
-        novaLista.isShown = dados.isShown;
-        novaLista.tarefas = dados.tarefas || [];
-        return novaLista;
-      });
+    .filter(dados => dados.ativo)
+    .map(dados => new Lista(dados));
+
   }
+  
 
+  buscaTarefa(idLista, valor) {
+    const lista = this.listas.find(lista => lista.idLista === idLista);
+  
+    return lista.tarefas.forEach(tarefa => {
+      const corresponde =
+      tarefa.nome?.toLowerCase().includes(valor.toLowerCase()) ||
+      tarefa.descricao?.toLowerCase().includes(valor.toLowerCase())
 
-  //método de busca nas listas e tarefas
-  busca(valor) {
-    return this.listas.filter(lista => {
-      //verifica se o nome da lista contém o valr
-      const nomeCorresponde = lista.nome.toLowerCase().includes(valor.toLowerCase());
-
-      //busca nas tarefas se alguma descriçao ou data de tarefa bate com o valor
-      //const tarefasCorrespondentes = lista.filtrarTarefas({ descricao: valor, data: valor });
-
-      //retorna true se qualquer uma das condiçoes for verdadeira 
-      return nomeCorresponde || tarefasCorrespondentes.length > 0;
-    });
+      tarefa.isShown = corresponde
+  })
   }
 
   //filtra a visibilidade das listas com base no valor procurado
-  filtrarVisibilidade(valor) {
+  buscaLista(valor) {
     this.listas.forEach(lista => {
       //verifica se o valor da lista corresponde ao que o usuario está buscando
       const corresponde =

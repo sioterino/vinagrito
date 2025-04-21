@@ -1,13 +1,11 @@
 import { Utils } from "./Utils.js"
 
 class Tarefa {
-    constructor({ nome, descricao, dataPrazo, hora, prioridade }, cor) {
+    constructor({ nome, descricao, prazo, prioridade }, cor) {
         this.idTarefa = Utils.novoID('tarefa');
         this.nome = nome;
         this.descricao = descricao;
-        this.dataCriacao = new Date();
-        this.dataPrazo = dataPrazo;
-        this.hora = hora;
+        this.prazo = prazo;
         this.prioridade = prioridade;
         this.cor = cor;
         this.completa = false;

@@ -1,6 +1,7 @@
 import { Utils } from "./Utils.js"
 import { Lista } from "./Listas.js"
 import { Tarefa } from "./Tarefa.js"
+import { Controle } from "./Controle.js"
 
 class DOM {
 
@@ -8,7 +9,36 @@ class DOM {
 
     constructor() {
         // inicializa container de listas
+        this.controle = new Controle()
         this.pendentes = document.querySelector('.listas')
+    }
+
+    loadListasFromStorage() {
+        const novasListas = this.controle.listas
+        novasListas.forEach( l => {
+            this.newList(l)
+        })
+    }
+
+    handleSearch(e) {
+        const valor = e.target.value;
+        this.controle.buscaLista(valor);
+
+        // Atualiza o DOM para refletir a visibilidade das listas
+        this.updateListVisibility();
+    }
+
+    updateListVisibility() {
+        // Recupera as listas visíveis
+        const listasVisiveis = this.controle.getListasVisiveis();
+
+        // Exclui todas as listas
+        this.pendentes.innerHTML = '';
+
+        // Recria as listas visíveis
+        listasVisiveis.forEach(lista => {
+            this.newList(lista);
+        });
     }
 
     //  RENDERIZA NOVA LISTA
@@ -195,7 +225,7 @@ class DOM {
     }
 
     // LISTAS EVENTLISTENERS
-    #listaInit(lista, obj, criarTarfea) {
+    #listaInit(lista, { idLista, cor }, criarTarfea) {
         // abre e fecha lista
         lista.addEventListener('click', e => {
             if (e.target.closest('.more') || e.target.closest('.more-dropdown')) return
@@ -239,6 +269,7 @@ class DOM {
 
         // DELETA LISTAS
         lista.querySelector('.more-del').addEventListener('click', e => {
+            this.controle.remover(idLista)
             lista.remove()
             this.#qtdLista -= 1
             document.querySelector('.fazendo').querySelector('.qtd-listas').textContent = this.#qtdLista
@@ -248,14 +279,14 @@ class DOM {
 
         // EDITA LISTAS
         lista.querySelector('.more-edit').addEventListener('click', e => {
-            console.log(obj.idLista)
+            console.log(idLista)
             console.log('EDITAR LISTA')
         })
 
         // ========================================================================================================
 
         // incializa os evenlisteners do botão NOVA TAREFA
-        criarTarfea.new(lista.querySelector('.nova-tarefa'), obj.idLista)
+        criarTarfea.new(lista.querySelector('.nova-tarefa'), idLista, cor)
 
         // ========================================================================================================
 
@@ -343,7 +374,6 @@ class DOM {
             tarefa.classList.remove('completed')  // Remove class to uncheck task
         }
     }
-    
 
 }
 
@@ -351,16 +381,18 @@ class Dialog {
 
     #dom = new DOM()
     #idLista = null
+    #cor = null
 
     constructor(dialog) {
         this.dialog = dialog
     }
 
     // EVENTLISTENERS DOS BOTÕES DE CRIAR LISTA E TAREFA
-    new(triggerElement, idLista) {
+    new(triggerElement, idLista, cor) {
         if (triggerElement.classList.contains('nova-tarefa')) {
             // caso o botão seja o de NOVA TAREDA, idLista da classe DIALOG é definido
             this.#idLista = idLista
+            this.#cor = cor
         }
     
         triggerElement.addEventListener('click', () => this.dialog.showModal())
@@ -392,18 +424,19 @@ class Dialog {
 
         // cria e renderiza na tela a nova lista/tarefa
         const formData = this.#getContent()
-        console.log(formData)
         
         // cria NOVA LISTA caso seja a ORIGEM do
         // forms seja do DIALOG seja NOVA-LISTA
         if (formData.func === 'nova-lista') {   
-            this.#dom.newList(new Lista(formData))
+            // this.#dom.newList(new Lista(formData))
+            this.#dom.newList( this.#dom.controle.adicionar( formData ) )
+            
         }
         
         // cria NOVA TAREDA caso seja a ORIGEM do
         // forms seja do DIALOG seja NOVA-TAREFA
         else if (formData.func === 'nova-tarefa') {
-            this.#dom.newTask(new Tarefa(formData), this.#idLista)
+            this.#dom.newTask(new Tarefa(formData, this.#cor), this.#idLista)
         }
 
         this.dialog.close() // fecha o modal
