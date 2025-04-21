@@ -49,8 +49,10 @@ class Controle {
     if (data.idTarefa) return
 
     const l = Utils.getListaByID(this.listas, idLista)
+    console.log(l)
 
     const novaTarefa = l.adicionarTarefa(data, l.cor)
+
     this.saveToLocalStorage()
     return novaTarefa
   }

@@ -3,12 +3,13 @@ import { Controle } from "./Controle.js"
 
 class DOM {
 
-    #qtdLista = 0 // contador de listas
-
+    #qtdLista = 0
     constructor() {
-        // inicializa container de listas
         this.controle = new Controle()
         this.pendentes = document.querySelector('.listas')
+
+        // NEW: Shared task dialog instance
+        this.taskDialog = new Dialog(null, (data, id) => this.#newTask(data, id))
     }
 
     pageInit() {
@@ -22,7 +23,7 @@ class DOM {
 
     #loadListasFromStorage() {
         const novasListas = this.controle.listas
-        novasListas.forEach( l => {
+        novasListas.forEach(l => {
             this.#newList(l)
         })
     }
@@ -30,133 +31,91 @@ class DOM {
     #handleSearch(e) {
         const valor = e.target.value
         this.controle.buscaLista(valor)
-
         this.#carregaVisíveis()
     }
 
     #carregaVisíveis() {
-        // Recupera as listas visíveis
         const listasVisiveis = this.controle.getListasVisiveis()
-
-        // Exclui todas as listas
         this.pendentes.innerHTML = ''
-
-        // Recria as listas visíveis
         listasVisiveis.forEach(lista => {
             this.#newList(lista)
         })
     }
 
-    //  RENDERIZA NOVA LISTA
     #newList(formObj, id = null) {
         const listObj = this.controle.adicionar(formObj) || formObj
 
         const lista = document.querySelector('#lista-template').content.cloneNode(true).querySelector('.lista')
-        
+
         lista.id = listObj.idLista
         lista.classList.add(`${listObj.cor}-fundo`)
         lista.classList.add(`${listObj.cor}-borda`)
 
         lista.querySelector('.lista-nome').textContent = listObj.nome
-
         lista.querySelector('.circle').classList.add(listObj.cor)
 
         this.pendentes.append(lista)
 
-        this.#listInit( lista, listObj )
-
+        this.#listInit(lista, listObj)
         this.#addQtdLista()
 
-        if (listObj.tarefas && listObj.tarefas.length) {
+        if (listObj.tarefas?.length) {
+
             const tarefasContainer = lista.querySelector('.tarefas')
+            
             listObj.tarefas.forEach(tarefa => {
+                console.log(tarefa)
                 const tarefaEl = this.#renderTarefa(tarefa)
                 tarefasContainer.append(tarefaEl)
+
             })
+
         }
     }
 
-    // LISTAS EVENTLISTENERS
     #listInit(lista, { idLista }) {
-        // abre e fecha lista
         lista.addEventListener('click', e => {
             if (e.target.closest('.more') || e.target.closest('.more-dropdown')) return
-            // captura o ID da lista sendo clicada
-           const idLista = e.target.closest('.lista').id
-           // garante que as listas abertas sejam fechadas
-           // antes da lista clicada seja aberta
+            const idLista = e.target.closest('.lista').id
             this.#toggleLista(idLista)
         })
 
-        // ========================================================================================================
-        
-        // abre o dropdown do botão de 'more'
         this.#openDropdown(lista)
 
-        // ========================================================================================================
-
-        // eventlistener no dom inteiro <3
         document.addEventListener('click', e => {
-            e.stopPropagation() // evita a propagação desse clique divoss
-
-            // fecha os dropdowns do 'more' ao clicar fora OU em uma das opções do dropdown
+            e.stopPropagation()
             if (!e.target.closest('.more-dropdown') || e.target.closest('.more-li')) {
                 document.querySelectorAll('.more-dropdown').forEach(drop => drop.classList.add('hide'))
             }
 
-           // fecha lista caso o usuário clique fora dela <3 (ignora caixas de dialogo)
             if (!e.target.closest('.lista') && !e.target.closest('dialog')) {
                 this.#toggleLista()
             }
-
         })
 
-        // ========================================================================================================
-
-        // DELETA LISTAS
         lista.querySelector('.more-del').addEventListener('click', e => {
             this.controle.remover(idLista)
             lista.remove()
-
             this.#addQtdLista(false)
         })
 
-        // ========================================================================================================
-
-        // EDITA LISTAS
         lista.querySelector('.more-edit').addEventListener('click', e => {
-            // aaaaaaaaaaaaaaaaaaaaaa
+            // editing logic here
         })
 
-        // ========================================================================================================
-
-        // incializa os evenlisteners do botão NOVA TAREFA
+        // ✅ Reuse the shared taskDialog instance
         const botao = lista.querySelector('.nova-tarefa')
-        const dialog = new Dialog(botao, (data, id) => this.#newTask(data, id))
-
-        // ========================================================================================================
-
+        this.taskDialog.setBotao(botao)
     }
 
-    // BARE/FECHA LISTA
     #toggleLista(idLista = null) {
-        // itera um array de listas
         this.pendentes.querySelectorAll('.lista').forEach(l => {
-            // conteúdo escondido como TAREFAS
             const alvo = l.querySelector('.content')
-            if (!alvo.classList.contains('hide')) {
-                // mostra conteúdo escondido caso ele esteja escondido
-                alvo.classList.add('hide')
-            }
-
-            // abre uma lista caso o idLista capturado 
-            // no clique corresponda ao item iterado
+            alvo.classList.add('hide')
             if (idLista !== null && l.id === idLista) {
                 alvo.classList.remove('hide')
             }
-
         })
-        // ========================================================================================================
     }
 
     #openDropdown(element) {
@@ -169,93 +128,92 @@ class DOM {
 
     #addQtdLista(add = true) {
         this.#qtdLista += add ? 1 : -1
-        document.querySelector('.fazendo').querySelector('.qtd-listas').textContent = this.#qtdLista;
+        document.querySelector('.fazendo .qtd-listas').textContent = this.#qtdLista
     }
-    
+
     #newTask(formObj, idLista) {
         if (idLista) {
             const taskObj = this.controle.novaTarefa(formObj, idLista)
             const tarefa = this.#renderTarefa(taskObj)
-        
-            this.pendentes.querySelector(`.lista[id="${idLista}"]`).querySelector('.tarefas').append(tarefa)
+            this.pendentes.querySelector(`.lista[id="${idLista}"] .tarefas`).append(tarefa)
         }
     }
-    
 
     #renderTarefa(taskObj) {
         const tarefa = document.querySelector('#tarefa-template').content.cloneNode(true).querySelector('.tarefa')
-    
+        console.log(taskObj)
+
         tarefa.id = taskObj.idTarefa
+        tarefa.classList.add(`${taskObj.cor}-borda`)
+
         tarefa.querySelector('.tarefa-nome').textContent = taskObj.nome
         tarefa.querySelector('.tarefa-desc').textContent = taskObj.descricao
         tarefa.querySelector('.prioridade').textContent = `${taskObj.prioridade}P`
         tarefa.querySelector('.prazo').textContent = Utils.formatDate(taskObj.prazo)
         tarefa.querySelector('.faltam').textContent = '0d'
-    
+
         this.#taskInit(tarefa)
         return tarefa
     }
-    
 
     #taskInit(tarefa) {
-        // this.#openDropdown(tarefa)
-    }   
+        // Task-specific event listeners
+    }
 
 }
 
 class Dialog {
-    
+
     #botao
     #dialog
     #callback
     #idLista = null
 
     constructor(botao, callback = null) {
-        this.#botao = botao
-        this.data = {}
         this.#callback = callback
+        this.data = {}
 
-        if (this.#botao.classList.contains('nova-lista')) {
+        if (botao) {
+            this.setBotao(botao)
+        }
+
+        // default to task dialog (you can adjust logic if needed)
+        if (botao?.classList.contains('nova-lista')) {
             this.#dialog = document.querySelector('#nova-lista')
         } else {
             this.#dialog = document.querySelector('#nova-tarefa')
         }
 
         this.form = this.#dialog.querySelector('form')
-        
-        this.#new()
-    }
-    
-    // EVENTLISTENERS DOS BOTÕES DE CRIAR LISTA E TAREFA
-    #new() {
-        this.#botao.addEventListener('click', e => {
-            this.#dialog.showModal()
-            this.#idLista = e.target.closest('.lista') ? e.target.closest('.lista').id : null
-        })
         this.#dialog.addEventListener('click', e => this.#fecharModal(e))
-        
         this.form.addEventListener('submit', e => this.#formSubmit(e))
     }
-    
+
+    setBotao(botao) {
+        this.#botao = botao
+        this.#botao.addEventListener('click', e => {
+            this.#dialog.showModal()
+            this.#idLista = e.target.closest('.lista')?.id ?? null
+        })
+    }
+
     #fecharModal(e) {
-        // fecha modal somente se a pessoa clicar fora da div que contem o forms
         if (e.target.tagName.toLowerCase() === 'dialog') {
             this.#dialog.close()
             this.form.reset()
         }
     }
-    
-    // ao enviar o forms
+
     #formSubmit(e) {
-        e.preventDefault() // evita a página de recarregar
+        e.preventDefault()
 
         const input = new FormData(this.form)
-        input.forEach( (val, key) => {
+        input.forEach((val, key) => {
             this.data[key] = val
         })
 
-        this.#dialog.close() // fecha o modal
-        e.target.reset() // reseta o forms
+        this.#dialog.close()
+        e.target.reset()
 
         if (this.#callback !== null) {
             this.#callback(this.data, this.#idLista)
@@ -263,7 +221,6 @@ class Dialog {
 
         this.#idLista = null
     }
-
 }
 
-export { Dialog, DOM }
+export { DOM, Dialog }
