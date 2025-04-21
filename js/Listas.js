@@ -13,8 +13,11 @@ class Lista {
   }
   
 
-  adicionarTarefa(tarefa) {
+  adicionarTarefa(data, cor) {
+    const tarefa  = new Tarefa(data, cor)
     this.tarefas.push(tarefa);
+    console.log(this.tarefas)
+    return tarefa
   }
 
   // remove pelo o id

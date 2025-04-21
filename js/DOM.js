@@ -78,7 +78,8 @@ class DOM {
         lista.append(head, moreDropdown)
 
         // rederiza conteúdo interno da lista, como tarefas e botões necessários
-        lista.append( this.#insideLista() )
+        const content = this.#insideLista()
+        lista.append( content )
 
         this.pendentes.append(lista)
 
@@ -89,7 +90,10 @@ class DOM {
         document.querySelector('.fazendo').querySelector('.qtd-listas').textContent = this.#qtdLista
 
         // responsável por criar / associar um DIALOG de criação de tarefa ao botão de nova tarefa
-        const criarTarfea = new Dialog(document.querySelector('.criar-tarefa-dialog'))
+        const criarTarfea = new Dialog(
+            document.querySelector('.criar-tarefa-dialog'),
+            lista
+        )
 
         // inicializa os eventListeners da lista
         this.#listaInit(lista, obj, criarTarfea)
@@ -313,55 +317,46 @@ class DOM {
         // ========================================================================================================
     }
 
-    newTask(obj, idLista) {
-        // Get the list element using the idLista
-        const lista = this.pendentes.querySelector(`.lista[id="${idLista}"]`)
+    newTask(obj, lista) {
         const content = lista.querySelector('.content')
     
         // Create the main task container <div class="tarefa">
-        const tarefa = Utils.newEl('div', ['tarefa', `${obj.cor || 'verde'}-borda`], obj.idTarefa)
+        const tarefa = Utils.newEl('div', ['tarefa', `${obj.cor}-borda`], obj.idTarefa)
+
 
         // Create the task header <div class="tarefa-head">
         const head = Utils.newEl('div', 'tarefa-head')
-
         // Create the unchecked icon <span class="icon unchecked">
         const unchecked = Utils.newEl('span', ['icon', 'unchecked'], null, 'check_box_outline_blank')
-
         // Create the checked icon <span class="icon checked">
         const checked = Utils.newEl('span', ['icon', 'checked', 'hide'], null, 'check_box')
-
         // Create the task name <h4 class="tarefa-nome">
         const nome = Utils.newEl('h4', 'tarefa-nome', null, obj.nome)
-
         // Create the more icon <span class="icon tarefa-more">
         const more = Utils.newEl('span', ['icon',  'tarefa-more'], null, 'more_horiz')
-
         // Append the icons and task name to the task header
         head.append(unchecked, checked, nome, more)
+
 
         // Create the task description <blockquote class="tarefa-desc">
         const descricao = Utils.newEl('blockquote', 'tarefa-desc', null, obj.descricao)
 
+
         // Create the task info container <div class="tarefa-info">
         const info = Utils.newEl('div', 'tarefa-info')
-
         // Create the priority <p class="prioridade">
-        const prioridade = Utils.newEl('p', ['prioridade', `${obj.prioridade}p`], null, `${obj.prioridade}P`)
-
+        const prioridade = Utils.newEl('p', ['prioridade', `${obj.prioridade}P`], null, `${obj.prioridade}P`)
         // Create the deadline <p class="prazo">
-        console.log(obj.prazo)
         const prazo = Utils.newEl('p', 'prazo', null, Utils.formatDate(obj.prazo))
-
         // Calculate the remaining days (Assuming you have a way to calculate remaining days)
         const faltam = Utils.newEl('p', 'faltam', null, '8d') // Here you can calculate the real remaining days based on the task deadline
-
         // Append the task info paragraphs
         info.append(prioridade, prazo, faltam)
 
         // Append everything to the task div
         tarefa.append(head, descricao, info)
+        content.append(tarefa)
 
-        content.querySelector('.nova-tarefa').before(tarefa)
     
         // Add any future event listeners for the task (edit, move, delete, etc.)
     }
@@ -379,12 +374,18 @@ class DOM {
 
 class Dialog {
 
-    #dom = new DOM()
+    #dom
     #idLista = null
     #cor = null
+    #lista = null
 
-    constructor(dialog) {
+    constructor(dialog, lista) {
+        this.#dom = new DOM()
         this.dialog = dialog
+
+        if (lista) {
+            this.#lista = lista
+        }
     }
 
     // EVENTLISTENERS DOS BOTÕES DE CRIAR LISTA E TAREFA
@@ -427,16 +428,14 @@ class Dialog {
         
         // cria NOVA LISTA caso seja a ORIGEM do
         // forms seja do DIALOG seja NOVA-LISTA
-        if (formData.func === 'nova-lista') {   
-            // this.#dom.newList(new Lista(formData))
+        if (formData.func === 'nova-lista') {
             this.#dom.newList( this.#dom.controle.adicionar( formData ) )
-            
         }
         
         // cria NOVA TAREDA caso seja a ORIGEM do
         // forms seja do DIALOG seja NOVA-TAREFA
         else if (formData.func === 'nova-tarefa') {
-            this.#dom.newTask(new Tarefa(formData, this.#cor), this.#idLista)
+            this.#dom.newTask( this.#dom.controle.novaTarefa(this.#idLista, formData), this.#lista)
         }
 
         this.dialog.close() // fecha o modal

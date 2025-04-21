@@ -22,14 +22,12 @@ class Controle {
 
   //método para adicionar uma nova lista
   adicionar(data) {
-    console.log(' novaLista ')
     const novaLista = new Lista( data );
 
     novaLista.isShown = true;  //marca a lista como visível por padrão 
 
     this.listas.push(novaLista);  //adiciona no array
     this.saveToLocalStorage();  //salva as listas no LocalStorage
-
 
     return novaLista;
   }
@@ -43,6 +41,18 @@ class Controle {
       lista.ativo = false;  //marca a lista como inativa mas continua no LocalStorage
       this.saveToLocalStorage();
     }
+  }
+
+  novaTarefa(idLista, data) {
+    console.log(idLista)
+    console.log(data)
+
+    const l = this.listas.find(l => l.idLista == idLista)
+    const novaTarefa = l.adicionarTarefa(data, l.cor)
+    console.log(novaTarefa)
+
+    this.saveToLocalStorage()
+    return novaTarefa
   }
 
   //salva as listas no LocalStorage
