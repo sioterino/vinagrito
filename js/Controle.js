@@ -8,10 +8,10 @@ import { Lista } from './Listas.js';
 
 //loadFromLocalStorage (retorna Array de listas do localStorage) - feito
 
-//busca (deve ser capaz de buscar listas pelo nome, assim como pelo nome e descricção das tarefas)
+//busca (deve ser capaz de buscar listas pelo nome, assim como pelo nome e descricção das tarefas) - feito
 
 //controle deve ter método q recebe um input string, ele deve encontrar correspondências com esse valor (nome ou cor) 
-// e definir um atributo da Lista "isShown" como true ou false esse atributo isShown será iterado pelo DOM e aos q tiverem false serão escondidos com o display: none.
+// e definir um atributo da Lista "isShown" como true ou false esse atributo isShown será iterado pelo DOM e aos q tiverem false serão escondidos com o display: none.  - feito
 
 
 class Controle {
@@ -64,16 +64,37 @@ class Controle {
   }
 
 
+  //método de busca nas listas e tarefas
   busca(valor) {
+    return this.listas.filter(lista => {
+      //verifica se o nome da lista contém o valr
+      const nomeCorresponde = lista.nome.toLowerCase().includes(valor.toLowerCase());
 
+      //busca nas tarefas se alguma descriçao ou data de tarefa bate com o valor
+      //const tarefasCorrespondentes = lista.filtrarTarefas({ descricao: valor, data: valor });
+
+      //retorna true se qualquer uma das condiçoes for verdadeira 
+      return nomeCorresponde || tarefasCorrespondentes.length > 0;
+    });
   }
 
+  //filtra a visibilidade das listas com base no valor procurado
   filtrarVisibilidade(valor) {
+    this.listas.forEach(lista => {
+      //verifica se o valor da lista corresponde ao que o usuario está buscando
+      const corresponde =
+        lista.nome.toLowerCase().includes(valor.toLowerCase()) ||
+        lista.cor.toLowerCase().includes(valor.toLowerCase());
 
+      //atualiza a visibilidade da lista com base no resultado da comparaçao
+      lista.isShown = corresponde;
+    });
   }
 
+  //método para obter as listas que são visiveis
   getListasVisiveis() {
-
+    //filtra as listas que são ativas e estão visiveis
+    return this.listas.filter(lista => lista.ativo && lista.isShown);
   }
 }
 
