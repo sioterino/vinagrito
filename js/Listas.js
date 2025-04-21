@@ -16,7 +16,6 @@ class Lista {
   adicionarTarefa(data, cor) {
     const tarefa  = new Tarefa(data, cor)
     this.tarefas.push(tarefa);
-    console.log(this.tarefas)
     return tarefa
   }
 

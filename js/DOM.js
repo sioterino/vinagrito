@@ -66,6 +66,14 @@ class DOM {
         this.#listInit( lista, listObj )
 
         this.#addQtdLista()
+
+        if (listObj.tarefas && listObj.tarefas.length) {
+            const tarefasContainer = lista.querySelector('.tarefas')
+            listObj.tarefas.forEach(tarefa => {
+                const tarefaEl = this.#renderTarefa(tarefa)
+                tarefasContainer.append(tarefaEl)
+            })
+        }
     }
 
     // LISTAS EVENTLISTENERS
@@ -124,7 +132,7 @@ class DOM {
 
         // incializa os evenlisteners do botão NOVA TAREFA
         const botao = lista.querySelector('.nova-tarefa')
-        const dialog = new Dialog (botao, (data, id) => this.#newTask(data, id))
+        const dialog = new Dialog(botao, (data, id) => this.#newTask(data, id))
 
         // ========================================================================================================
 
@@ -165,22 +173,29 @@ class DOM {
     }
     
     #newTask(formObj, idLista) {
-        const taskObj = this.controle.novaTarefa(formObj, idLista) || formObj
+        if (idLista) {
+            const taskObj = this.controle.novaTarefa(formObj, idLista)
+            const tarefa = this.#renderTarefa(taskObj)
+        
+            this.pendentes.querySelector(`.lista[id="${idLista}"]`).querySelector('.tarefas').append(tarefa)
+        }
+    }
+    
 
+    #renderTarefa(taskObj) {
         const tarefa = document.querySelector('#tarefa-template').content.cloneNode(true).querySelector('.tarefa')
-
+    
         tarefa.id = taskObj.idTarefa
         tarefa.querySelector('.tarefa-nome').textContent = taskObj.nome
         tarefa.querySelector('.tarefa-desc').textContent = taskObj.descricao
         tarefa.querySelector('.prioridade').textContent = `${taskObj.prioridade}P`
         tarefa.querySelector('.prazo').textContent = Utils.formatDate(taskObj.prazo)
-        // tarefa.querySelector('.faltam').textContent = Utils.calculaTempoRestante(taskObj.prazo)
         tarefa.querySelector('.faltam').textContent = '0d'
-
-        this.pendentes.querySelector(`.lista[id="${idLista}"]`).querySelector('.tarefas').append(tarefa)
-
+    
         this.#taskInit(tarefa)
+        return tarefa
     }
+    
 
     #taskInit(tarefa) {
         // this.#openDropdown(tarefa)
@@ -193,7 +208,7 @@ class Dialog {
     #botao
     #dialog
     #callback
-    #idLista
+    #idLista = null
 
     constructor(botao, callback = null) {
         this.#botao = botao
