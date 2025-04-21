@@ -1,6 +1,4 @@
 import { Utils } from "./Utils.js"
-import { Lista } from "./Listas.js"
-import { Tarefa } from "./Tarefa.js"
 import { Controle } from "./Controle.js"
 
 class DOM {
@@ -13,227 +11,65 @@ class DOM {
         this.pendentes = document.querySelector('.listas')
     }
 
-    loadListasFromStorage() {
+    pageInit() {
+        const criarLista = document.querySelector('.nova-lista')
+        new Dialog(criarLista, (data, id) => this.#newList(data, id))
+
+        this.#loadListasFromStorage()
+
+        document.querySelector('#pesquisa').addEventListener('input', e => this.#handleSearch(e))
+    }
+
+    #loadListasFromStorage() {
         const novasListas = this.controle.listas
         novasListas.forEach( l => {
-            this.newList(l)
+            this.#newList(l)
         })
     }
 
-    handleSearch(e) {
-        const valor = e.target.value;
-        this.controle.buscaLista(valor);
+    #handleSearch(e) {
+        const valor = e.target.value
+        this.controle.buscaLista(valor)
 
-        // Atualiza o DOM para refletir a visibilidade das listas
-        this.updateListVisibility();
+        this.#carregaVisíveis()
     }
 
-    updateListVisibility() {
+    #carregaVisíveis() {
         // Recupera as listas visíveis
-        const listasVisiveis = this.controle.getListasVisiveis();
+        const listasVisiveis = this.controle.getListasVisiveis()
 
         // Exclui todas as listas
-        this.pendentes.innerHTML = '';
+        this.pendentes.innerHTML = ''
 
         // Recria as listas visíveis
         listasVisiveis.forEach(lista => {
-            this.newList(lista);
-        });
+            this.#newList(lista)
+        })
     }
 
     //  RENDERIZA NOVA LISTA
-    newList(obj) {
+    #newList(formObj, id = null) {
+        const listObj = this.controle.adicionar(formObj) || formObj
 
-        // card onde as informações da lista ficam guardadas
-        const lista = Utils.newEl('div', ['lista', `${obj.cor}-fundo`, `${obj.cor}-borda`], obj.idLista, null)
-
-        const head = Utils.newEl('div', 'lista-head')
-
-        // ========================================================================================================
-
-        // div principal com NOME e botão de EDITAR e DELETAR
-        const left = Utils.newEl('div', 'head-left')
-        const circle = Utils.newEl('span', ['icon', 'circle', obj.cor], null, 'circle')
-        const h4 = Utils.newEl('h4', 'lista-nome', null, obj.nome)
+        const lista = document.querySelector('#lista-template').content.cloneNode(true).querySelector('.lista')
         
-        left.append(circle, h4) // append basiquérrimo
+        lista.id = listObj.idLista
+        lista.classList.add(`${listObj.cor}-fundo`)
+        lista.classList.add(`${listObj.cor}-borda`)
 
-        // ========================================================================================================
-        
-        // informações adicionais sobre a lista como ULTIMA ATUALIZAÇÃO e N. DE TAREFAS
-        const right = Utils.newEl('div', 'head-right', null, null)
-        const a = Math.floor(Math.random() * 10)
-        const b = a + Math.floor(Math.random() * 10)
-        const stats = Utils.newEl('p', 'lista-status', null, `${a}/${b}`)
+        lista.querySelector('.lista-nome').textContent = listObj.nome
 
-        const more = Utils.newEl('span', ['icon', 'more'], null, 'more_horiz')
-        
-        right.append( stats, more )
-        head.append( left, right )
-        
-        // ========================================================================================================
-
-        // opções de DELETAR e EDITAR são criadas em função para reutilização de código
-        const moreDropdown = this.#moreDropdown()
-        lista.append(head, moreDropdown)
-
-        // rederiza conteúdo interno da lista, como tarefas e botões necessários
-        const content = this.#insideLista()
-        lista.append( content )
+        lista.querySelector('.circle').classList.add(listObj.cor)
 
         this.pendentes.append(lista)
 
-        // ========================================================================================================
+        this.#listInit( lista, listObj )
 
-        // atualiza o contador de listas
-        this.#qtdLista++
-        document.querySelector('.fazendo').querySelector('.qtd-listas').textContent = this.#qtdLista
-
-        // responsável por criar / associar um DIALOG de criação de tarefa ao botão de nova tarefa
-        const criarTarfea = new Dialog(
-            document.querySelector('.criar-tarefa-dialog'),
-            lista
-        )
-
-        // inicializa os eventListeners da lista
-        this.#listaInit(lista, obj, criarTarfea)
-        
-        // ========================================================================================================
-    }
-
-    // RENDERIZA O CONTEÚDO INTERNO DAS LISTAS
-    #insideLista() {
-
-        // elemento principal onde todos os elementos ficam escondido
-        const inside = Utils.newEl('div', ['content', 'hide'], null, null)
-        
-        // ========================================================================================================
-        
-        // seção de filtros
-        const divFilter = Utils.newEl('div', 'filtros')
-        
-        // wrapper genérico dos ordenadores
-        const selectWrapper = Utils.newEl('div', 'select-wrapper')
-
-        // ========================================================================================================
-
-        // ordenador por STATUS de cada tarefa
-
-        const filterWrapper1 = Utils.newEl('div', 'filter-wrapper')
-        const filter = Utils.newEl('select', ['select-filter', 'filtros-select'], null, null)
-
-        const statusOptions = [
-            {value: 'todos', text: 'Todos'},
-            {value: 'pendentes', text: 'Pendentes'},
-            {value: 'completos', text: 'Completos'},
-        ]
-
-        statusOptions.forEach(opt => {
-            const option = Utils.newEl('option', null, null, opt.text)
-            option.value = opt.value
-            filter.append(option)
-        })
-
-        const arrow1 = Utils.newEl('span', ['icon', 'arrow'], null, 'keyboard_arrow_up')
-        filterWrapper1.append(filter, arrow1)
-
-        // ========================================================================================================
-        
-        // ordenador por PRIORIDADE e URGÊNCIA de cada tarefa
-
-        const filterWrapper2 = Utils.newEl('div', 'filter-wrapper')
-        const order = Utils.newEl('select', ['select-order', 'filtros-select'], null, null)
-
-        const orderOptions = [
-            {value: 'mais-importante', text: 'Mais Importante'},
-            {value: 'menos-importante', text: 'Menos Importante'},
-            {value: 'mais-urgente', text: 'Mais Urgente'},
-            {value: 'menos-urgente', text: 'Menos Urgente'},
-        ]
-
-        orderOptions.forEach(opt => {
-            const option = Utils.newEl('option', null, null, opt.text)
-            option.value = opt.value
-            order.append(option)
-        })
-
-        const arrow2 = Utils.newEl('span', ['icon', 'arrow'], null, 'keyboard_arrow_up')
-        filterWrapper2.append(order, arrow2)
-
-        // adicionar ao wrapper genérico dos ordenadores
-        selectWrapper.append(filterWrapper1, filterWrapper2)
-        
-        // ========================================================================================================
-
-        // barra de pesquisa
-        const search = Utils.newEl('div', 'searchbar')
-        const lupa = Utils.newEl('span', ['icon', 'glass'], null, 'search')
-        const bar = Utils.newEl('input')
-        bar.type = 'text'
-        bar.id = 'pesquisa'
-        bar.name = 'searchbar'
-        bar.autocomplete = 'off'
-        bar.spellcheck = false
-        bar.placeholder = 'Pesquisar'
-
-        search.append(lupa, bar)
-        divFilter.append(selectWrapper, search)
-        
-        // ========================================================================================================
-
-        const tarefas = Utils.newEl('div', ['tarefas'])
-        
-        // ========================================================================================================
-
-        // botão de criar nova tarefa
-        const novaTarefa = Utils.newEl('div', ['botao-criar', 'nova-tarefa'])
-        const plus = Utils.newEl('span', ['icon', 'add'], null, 'add')
-        const novaTarefaP = Utils.newEl('p', null, null, 'Criar nova tarefa')
-        novaTarefa.append(plus, novaTarefaP)
-        
-        // ========================================================================================================
-
-        inside.append( divFilter, tarefas, novaTarefa )
-        return inside
-        
-        // ========================================================================================================
-    }
-
-    // RENDERIZA BOTÃO DE 'MORE' COM OPÇÕES DE MOVER, EDITAR E DELETAR
-    #moreDropdown(tarefa = false) {
-        // CONTAINER
-        const moreDropdown = Utils.newEl('ul', ['more-dropdown', 'hide'])
-        
-        // DELETER
-        const deletar = Utils.newEl('li', ['more-del', 'more-li'])
-        const iconDel = Utils.newEl('span', ['icon', 'delete'], null, 'delete')
-        const delP = Utils.newEl('p', null, null, 'Apagar')
-        deletar.append(iconDel, delP)
-
-        // EDITAR
-        const editar = Utils.newEl('li', ['more-edit', 'more-li'])
-        const iconEdit = Utils.newEl('span', ['icon', 'edit'], null, 'edit')
-        const editP = Utils.newEl('p', null, null, 'Editar')
-        editar.append(iconEdit, editP)
-
-        if (tarefa) {
-            // MOVER caso seja TAREFA
-            const mover = Utils.newEl('li', ['more-move', 'more-li'])
-            const iconMove = Utils.newEl('span', ['icon', 'move'], null, 'pan_tool')
-            const moveP = Utils.newEl('p', null, null, 'Mover')
-            mover.append(iconMove, moveP)
-            moreDropdown.append(editar, deletar, mover)
-        } else {
-            moreDropdown.append(editar, deletar)
-        }
-
-        return moreDropdown
-
-        // ========================================================================================================
+        this.#addQtdLista()
     }
 
     // LISTAS EVENTLISTENERS
-    #listaInit(lista, { idLista, cor }, criarTarfea) {
+    #listInit(lista, { idLista }) {
         // abre e fecha lista
         lista.addEventListener('click', e => {
             if (e.target.closest('.more') || e.target.closest('.more-dropdown')) return
@@ -247,13 +83,7 @@ class DOM {
         // ========================================================================================================
         
         // abre o dropdown do botão de 'more'
-        lista.querySelector('.more').addEventListener('click', e => {
-            e.stopPropagation() // evita que abra/feche a lista
-            
-            // adiciona/remove classe HIDE do elemento dropdown
-            const dropdown = lista.querySelector('.more-dropdown')
-            dropdown.classList.toggle('hide')
-        })
+        this.#openDropdown(lista)
 
         // ========================================================================================================
 
@@ -279,22 +109,22 @@ class DOM {
         lista.querySelector('.more-del').addEventListener('click', e => {
             this.controle.remover(idLista)
             lista.remove()
-            this.#qtdLista -= 1
-            document.querySelector('.fazendo').querySelector('.qtd-listas').textContent = this.#qtdLista
+
+            this.#addQtdLista(false)
         })
 
         // ========================================================================================================
 
         // EDITA LISTAS
         lista.querySelector('.more-edit').addEventListener('click', e => {
-            console.log(idLista)
-            console.log('EDITAR LISTA')
+            // aaaaaaaaaaaaaaaaaaaaaa
         })
 
         // ========================================================================================================
 
         // incializa os evenlisteners do botão NOVA TAREFA
-        criarTarfea.new(lista.querySelector('.nova-tarefa'), idLista, cor)
+        const botao = lista.querySelector('.nova-tarefa')
+        const dialog = new Dialog (botao, (data, id) => this.#newTask(data, id))
 
         // ========================================================================================================
 
@@ -321,140 +151,102 @@ class DOM {
         // ========================================================================================================
     }
 
-    newTask(obj, lista) {
-        const tarefas = lista.querySelector('.tarefas')
-    
-        // Create the main task container <div class="tarefa">
-        const task = Utils.newEl('div', ['tarefa', `${obj.cor}-borda`], obj.idTarefa)
+    #openDropdown(element) {
+        element.querySelector('.more').addEventListener('click', e => {
+            e.stopPropagation()
+            const dropdown = element.querySelector('.more-dropdown')
+            dropdown.classList.toggle('hide')
+        })
+    }
 
-
-        // Create the task header <div class="tarefa-head">
-        const head = Utils.newEl('div', 'tarefa-head')
-        // Create the unchecked icon <span class="icon unchecked">
-        const unchecked = Utils.newEl('span', ['icon', 'unchecked'], null, 'check_box_outline_blank')
-        // Create the checked icon <span class="icon checked">
-        const checked = Utils.newEl('span', ['icon', 'checked', 'hide'], null, 'check_box')
-        // Create the task name <h4 class="tarefa-nome">
-        const nome = Utils.newEl('h4', 'tarefa-nome', null, obj.nome)
-        // Create the more icon <span class="icon tarefa-more">
-        const more = Utils.newEl('span', ['icon',  'tarefa-more'], null, 'more_horiz')
-        // Append the icons and task name to the task header
-        head.append(unchecked, checked, nome, more)
-
-
-        // Create the task description <blockquote class="tarefa-desc">
-        const descricao = Utils.newEl('blockquote', 'tarefa-desc', null, obj.descricao)
-
-
-        // Create the task info container <div class="tarefa-info">
-        const info = Utils.newEl('div', 'tarefa-info')
-        // Create the priority <p class="prioridade">
-        const prioridade = Utils.newEl('p', ['prioridade', `${obj.prioridade}P`], null, `${obj.prioridade}P`)
-        // Create the deadline <p class="prazo">
-        const prazo = Utils.newEl('p', 'prazo', null, Utils.formatDate(obj.prazo))
-        // Calculate the remaining days (Assuming you have a way to calculate remaining days)
-        const faltam = Utils.newEl('p', 'faltam', null, '8d') // Here you can calculate the real remaining days based on the task deadline
-        // Append the task info paragraphs
-        info.append(prioridade, prazo, faltam)
-
-        // Append everything to the task div
-        task.append(head, descricao, info)
-        tarefas.append(task)
-
-    
-        // Add any future event listeners for the task (edit, move, delete, etc.)
+    #addQtdLista(add = true) {
+        this.#qtdLista += add ? 1 : -1
+        document.querySelector('.fazendo').querySelector('.qtd-listas').textContent = this.#qtdLista;
     }
     
-    // Handle the check/uncheck action
-    #toggleCheck(e, tarefa) {
-        if (e.target.checked) {
-            tarefa.classList.add('completed')  // Add class to mark task as completed
-        } else {
-            tarefa.classList.remove('completed')  // Remove class to uncheck task
-        }
+    #newTask(formObj, idLista) {
+        const taskObj = this.controle.novaTarefa(formObj, idLista) || formObj
+
+        const tarefa = document.querySelector('#tarefa-template').content.cloneNode(true).querySelector('.tarefa')
+
+        tarefa.id = taskObj.idTarefa
+        tarefa.querySelector('.tarefa-nome').textContent = taskObj.nome
+        tarefa.querySelector('.tarefa-desc').textContent = taskObj.descricao
+        tarefa.querySelector('.prioridade').textContent = `${taskObj.prioridade}P`
+        tarefa.querySelector('.prazo').textContent = Utils.formatDate(taskObj.prazo)
+        // tarefa.querySelector('.faltam').textContent = Utils.calculaTempoRestante(taskObj.prazo)
+        tarefa.querySelector('.faltam').textContent = '0d'
+
+        this.pendentes.querySelector(`.lista[id="${idLista}"]`).querySelector('.tarefas').append(tarefa)
+
+        this.#taskInit(tarefa)
     }
+
+    #taskInit(tarefa) {
+        // this.#openDropdown(tarefa)
+    }   
 
 }
 
 class Dialog {
-
-    #dom
-    #idLista = null
-    #cor = null
-    #lista = null
-
-    constructor(dialog, lista) {
-        this.#dom = new DOM()
-        this.dialog = dialog
-
-        if (lista) {
-            this.#lista = lista
-        }
-    }
-
-    // EVENTLISTENERS DOS BOTÕES DE CRIAR LISTA E TAREFA
-    new(triggerElement, idLista, cor) {
-        if (triggerElement.classList.contains('nova-tarefa')) {
-            // caso o botão seja o de NOVA TAREDA, idLista da classe DIALOG é definido
-            this.#idLista = idLista
-            this.#cor = cor
-        }
     
-        triggerElement.addEventListener('click', () => this.dialog.showModal())
-    
-        this.dialog.addEventListener('click', e => this.#fecharModal(e))
+    #botao
+    #dialog
+    #callback
+    #idLista
+
+    constructor(botao, callback = null) {
+        this.#botao = botao
+        this.data = {}
+        this.#callback = callback
+
+        if (this.#botao.classList.contains('nova-lista')) {
+            this.#dialog = document.querySelector('#nova-lista')
+        } else {
+            this.#dialog = document.querySelector('#nova-tarefa')
+        }
+
+        this.form = this.#dialog.querySelector('form')
         
-        this.dialog.querySelectorAll('form').forEach(form => {
-            form.addEventListener('submit', e => this.#formSubmit(e))
+        this.#new()
+    }
+    
+    // EVENTLISTENERS DOS BOTÕES DE CRIAR LISTA E TAREFA
+    #new() {
+        this.#botao.addEventListener('click', e => {
+            this.#dialog.showModal()
+            this.#idLista = e.target.closest('.lista') ? e.target.closest('.lista').id : null
         })
-        // ========================================================================================================
-    }    
-
+        this.#dialog.addEventListener('click', e => this.#fecharModal(e))
+        
+        this.form.addEventListener('submit', e => this.#formSubmit(e))
+    }
+    
     #fecharModal(e) {
         // fecha modal somente se a pessoa clicar fora da div que contem o forms
         if (e.target.tagName.toLowerCase() === 'dialog') {
-            this.dialog.close()
-            this.#resetForm() // reseta o forms
+            this.#dialog.close()
+            this.form.reset()
         }
-    } 
-
-    #resetForm() {
-        // pega todos os forms do html e reseta eles
-        this.dialog.querySelectorAll('form').forEach(form => form.reset())
     }
-
+    
     // ao enviar o forms
     #formSubmit(e) {
         e.preventDefault() // evita a página de recarregar
 
-        // cria e renderiza na tela a nova lista/tarefa
-        const formData = this.#getContent()
-        
-        // cria NOVA LISTA caso seja a ORIGEM do
-        // forms seja do DIALOG seja NOVA-LISTA
-        if (formData.func === 'nova-lista') {
-            this.#dom.newList( this.#dom.controle.adicionar( formData ) )
-        }
-        
-        // cria NOVA TAREDA caso seja a ORIGEM do
-        // forms seja do DIALOG seja NOVA-TAREFA
-        else if (formData.func === 'nova-tarefa') {
-            this.#dom.newTask( this.#dom.controle.novaTarefa(this.#idLista, formData), this.#lista)
-        }
-
-        this.dialog.close() // fecha o modal
-        e.target.reset() // reseta o forms
-    }
-    #getContent() {
-        // captura os valores do forms, como labels e inputs
-        const data = new FormData(this.dialog.querySelector('form'))
-
-        const inputs = { func: this.dialog.id }
-        data.forEach( (val, key) => {
-            inputs[key] = val
+        const input = new FormData(this.form)
+        input.forEach( (val, key) => {
+            this.data[key] = val
         })
 
-        return inputs
+        this.#dialog.close() // fecha o modal
+        e.target.reset() // reseta o forms
+
+        if (this.#callback !== null) {
+            this.#callback(this.data, this.#idLista)
+        }
+
+        this.#idLista = null
     }
 
 }

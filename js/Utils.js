@@ -44,52 +44,11 @@ class Utils {
         }
 
     }
-    
-
-
-    // RETORNA UM ELEMENTO NO DOM EM MENOS LINHAS
-    static newEl (tag, classes = null, id = null, textContent = null) {
-        // por padrão, o elemento não possui classe, id ou textContent
-
-        /*
-            COMO USAR:
-            Utils.newEl( 'p', 'desc', 'aqui fica escrito a descrição')
-            Utils.newEl( 'span', ['icon', 'close'], 'close')
-            Utils.newEl( 'div', 'wrapper')
-            Utils.newEl( 'li', null, 'item de uma lista')
-            Utils.newEl( 'ul')
-        */
-
-        const el = document.createElement( tag )
-
-        if (classes !== null) {
-            if ( Array.isArray(classes) ) {
-                classes.forEach(c => {
-                    el.classList.add(c)
-                })
-    
-            } else {
-                el.classList.add(classes)
-            }
-        }
-
-        if (id !== null) {
-            el.id = id
-        }
-
-        if (textContent !== null) {
-            el.textContent = textContent
-        }
-
-        return el
-    }
 
     static formatDate(input) {    
         const data = new Date(input);
     
-        if (isNaN(data)) {
-            console.log("Invalid date");
-        } else {
+        if (!isNaN(data)) {
             const optionsDate = { day: '2-digit', month: '2-digit', year: 'numeric' };
             const optionsTime = { hour: '2-digit', minute: '2-digit', hour12: true };
     
@@ -101,7 +60,35 @@ class Utils {
             return brazilianDateTime;
         }
     }
+
+    static calculaTempoRestante(data) {
+
+        const agora = new Date();
+        const diferenca = data.getTime() - agora.getTime();
+
+        const negativo = diferenca < 0;
+        const diferencaModular = Math.abs(diferenca);
     
+        const segundos = Math.floor(diferencaModular / 1000);
+        const minutos = Math.floor(segundos / 60);
+        const horas = Math.floor(minutos / 60);
+        const dias = Math.floor(horas / 24);
+    
+        if (dias > 0) return `${negativo ? '-' : ''}${dias}d`;
+        if (horas > 0) return `${negativo ? '-' : ''}${horas % 24}h`;
+        if (minutos > 0) return `${negativo ? '-' : ''}${minutos % 60}min`;
+        if (segundos > 0) return `${negativo ? '-' : ''}${segundos % 60}s`;
+    
+        return 'agora';
+    }
+
+    static getListaByID(listas, id) {
+        return listas.find(item => item.idLista === id)
+    } 
+
+    static getTaskByID(tarefas, id) {
+        return tarefas.find(item => item.idTarefa === id)
+    }
 
 }
 

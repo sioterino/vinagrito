@@ -51,24 +51,6 @@
 
                 <!-- JS SCRIPT IRÁ POPULAR AQUI -->
 
-                <!-- <div id="a126874230975" class="tarefa">
-                    <div class="tarefa-head">
-                        <span class="icon unchecked">check_box_outline_blank</span>
-                        <span class="icon checked">check_box</span>
-                        <h4 class="tarefa-nome">Tarefa Sem Nome</h4>
-                        <span class="icon tarefa-more">more_horiz</span>
-                    </div>
-
-                    <blockquote class="tarefa-desc">Descrição da tarefa</blockquote>
-
-                    <div class="tarefa-info">
-                        <p class="prioridade">P1</p>
-                        <p class="prazo">Data Prazo</p>
-                        <p class="faltam">8d</p>
-                    </div>
-
-                </div> -->
-
             </section>
 
             <div class="botao-criar nova-lista">
@@ -135,6 +117,108 @@
             </form>
         </div>
     </dialog>
+
+    <template id="lista-template">
+
+        <div class="lista">
+          <div class="lista-head">
+            <div class="head-left">
+              <span class="icon circle">circle</span>
+              <h4 class="lista-nome">Lista Sem Nome</h4>
+            </div>
+            <div class="head-right">
+              <p class="lista-status">0/0</p>
+              <span class="icon more">more_horiz</span>
+            </div>
+          </div>
+
+          <ul class="more-dropdown hide">
+            <li class="more-edit more-li">
+              <span class="icon edit">edit</span>
+              <p>Editar</p>
+            </li>
+            <li class="more-del more-li">
+              <span class="icon delete">delete</span>
+              <p>Apagar</p>
+            </li>
+          </ul>
+
+          <div class="content hide">
+            <div class="filtros">
+              <div class="select-wrapper">
+                <!-- filtro status -->
+                <div class="filter-wrapper">
+                  <select class="select-filter filtros-select">
+                    <option value="todos">Todos</option>
+                    <option value="pendentes">Pendentes</option>
+                    <option value="completos">Completos</option>
+                  </select>
+                  <span class="icon arrow">keyboard_arrow_up</span>
+                </div>
+
+                <!-- filtro prioridade -->
+                <div class="filter-wrapper">
+                  <select class="select-order filtros-select">
+                    <option value="mais-importante">Mais Importante</option>
+                    <option value="menos-importante">Menos Importante</option>
+                    <option value="mais-urgente">Mais Urgente</option>
+                    <option value="menos-urgente">Menos Urgente</option>
+                  </select>
+                  <span class="icon arrow">keyboard_arrow_up</span>
+                </div>
+              </div>
+
+              <!-- barra de pesquisa -->
+              <div class="searchbar">
+                <span class="icon glass">search</span>
+                <input
+                  type="text"
+                  id="pesquisa"
+                  name="searchbar"
+                  autocomplete="off"
+                  spellcheck="false"
+                  placeholder="Pesquisar"
+                >
+              </div>
+            </div>
+
+            <!-- container de tarefas -->
+            <div class="tarefas">
+
+                <!-- populado com JS -->
+
+            </div>
+
+            <!-- botão nova tarefa -->
+            <div class="botao-criar nova-tarefa">
+              <span class="icon add">add</span>
+              <p>Criar nova tarefa</p>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <template id="tarefa-template">
+
+        <div class="tarefa">
+            <div class="tarefa-head">
+                <span class="icon unchecked">check_box_outline_blank</span>
+                <span class="icon checked hide">check_box</span>
+                <h4 class="tarefa-nome">Tarefa Sem Nome</h4>
+                <span class="icon tarefa-more">more_horiz</span>
+            </div>
+
+            <blockquote class="tarefa-desc">Descrição da tarefa</blockquote>
+
+            <div class="tarefa-info">
+                <p class="prioridade">P1</p>
+                <p class="prazo">Data Prazo</p>
+                <p class="faltam">0h</p>
+            </div>
+
+        </div>
+
+      </template>
 
 </body>
 </html>
