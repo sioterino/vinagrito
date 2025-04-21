@@ -1,3 +1,10 @@
+.tarefas {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
 .tarefa {
     background-color: rgba(255, 255, 255, .05);
     padding: 1rem;

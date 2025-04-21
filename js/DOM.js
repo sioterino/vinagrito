@@ -181,15 +181,19 @@ class DOM {
         
         // ========================================================================================================
 
+        const tarefas = Utils.newEl('div', ['tarefas'])
+        
+        // ========================================================================================================
+
         // botão de criar nova tarefa
-        const novaTarefa = Utils.newEl('div', ['botao-criar', 'nova-tarefa'], null, null)
+        const novaTarefa = Utils.newEl('div', ['botao-criar', 'nova-tarefa'])
         const plus = Utils.newEl('span', ['icon', 'add'], null, 'add')
         const novaTarefaP = Utils.newEl('p', null, null, 'Criar nova tarefa')
         novaTarefa.append(plus, novaTarefaP)
         
         // ========================================================================================================
 
-        inside.append( divFilter, novaTarefa )
+        inside.append( divFilter, tarefas, novaTarefa )
         return inside
         
         // ========================================================================================================
@@ -198,23 +202,23 @@ class DOM {
     // RENDERIZA BOTÃO DE 'MORE' COM OPÇÕES DE MOVER, EDITAR E DELETAR
     #moreDropdown(tarefa = false) {
         // CONTAINER
-        const moreDropdown = Utils.newEl('ul', ['more-dropdown', 'hide'], null, null)
+        const moreDropdown = Utils.newEl('ul', ['more-dropdown', 'hide'])
         
         // DELETER
-        const deletar = Utils.newEl('li', ['more-del', 'more-li'], null, null)
+        const deletar = Utils.newEl('li', ['more-del', 'more-li'])
         const iconDel = Utils.newEl('span', ['icon', 'delete'], null, 'delete')
         const delP = Utils.newEl('p', null, null, 'Apagar')
         deletar.append(iconDel, delP)
 
         // EDITAR
-        const editar = Utils.newEl('li', ['more-edit', 'more-li'], null, null)
+        const editar = Utils.newEl('li', ['more-edit', 'more-li'])
         const iconEdit = Utils.newEl('span', ['icon', 'edit'], null, 'edit')
         const editP = Utils.newEl('p', null, null, 'Editar')
         editar.append(iconEdit, editP)
 
         if (tarefa) {
             // MOVER caso seja TAREFA
-            const mover = Utils.newEl('li', ['more-move', 'more-li'], null, null)
+            const mover = Utils.newEl('li', ['more-move', 'more-li'])
             const iconMove = Utils.newEl('span', ['icon', 'move'], null, 'pan_tool')
             const moveP = Utils.newEl('p', null, null, 'Mover')
             mover.append(iconMove, moveP)
@@ -318,10 +322,10 @@ class DOM {
     }
 
     newTask(obj, lista) {
-        const content = lista.querySelector('.content')
+        const tarefas = lista.querySelector('.tarefas')
     
         // Create the main task container <div class="tarefa">
-        const tarefa = Utils.newEl('div', ['tarefa', `${obj.cor}-borda`], obj.idTarefa)
+        const task = Utils.newEl('div', ['tarefa', `${obj.cor}-borda`], obj.idTarefa)
 
 
         // Create the task header <div class="tarefa-head">
@@ -354,8 +358,8 @@ class DOM {
         info.append(prioridade, prazo, faltam)
 
         // Append everything to the task div
-        tarefa.append(head, descricao, info)
-        content.append(tarefa)
+        task.append(head, descricao, info)
+        tarefas.append(task)
 
     
         // Add any future event listeners for the task (edit, move, delete, etc.)
