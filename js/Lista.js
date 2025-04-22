@@ -23,6 +23,7 @@ class Lista {
   removerTarefa(idTarefa) {
     const tarefa = this.tarefas.find(tarefa => tarefa.idTarefa === idTarefa);
     tarefa.toggleAtividade()
+    tarefa.isShown = false
   }
 
   //ordena as tarefas dependendo do critério que foi passado

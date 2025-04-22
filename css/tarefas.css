@@ -67,7 +67,6 @@
     display: flex;
     gap: .3rem;
 
-    background-color: var(--vermelho-escuro);
     padding: .6rem .6rem .4rem 1rem;
     border-radius: 1.5rem;
 }
@@ -83,7 +82,6 @@
     overflow-wrap: break-word;
     max-width: 100%;
 
-    background-color: var(--vermelho-escuro);
     padding: 1rem;
     border-radius: .25rem;
     cursor: text;

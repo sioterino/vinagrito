@@ -1,4 +1,5 @@
 import { Lista } from './Lista.js';
+import { Tarefa } from './Tarefa.js';
 import { Utils } from './Utils.js';
 
 //adicionar (cria nova lista) - feito
@@ -66,6 +67,8 @@ class Controle {
   excluirTarefa(idLista, idTarefa) {
     const lista = this.listas.find(l => l.idLista === idLista)
     lista.removerTarefa(idTarefa)
+    console.log(lista)
+    console.log(this.listas)
     this.saveToLocalStorage()
   }
 
@@ -76,13 +79,21 @@ class Controle {
 
   //carrega as listas do LocalStorage
   loadFromLocalStorage() {
-    const listasSalvas = JSON.parse(localStorage.getItem('listas')) || [];  // array vazio se não existir nada salvo
-
+    const listasSalvas = JSON.parse(localStorage.getItem('listas')) || [];
+  
     this.listas = listasSalvas
-    .filter(dados => dados.ativo)
-    .map(dados => new Lista(dados));
-
+      .filter(dados => dados.ativo)
+      .map(dados => {
+        const lista = new Lista(dados);
+  
+        lista.tarefas = (dados.tarefas || [])
+          .filter(tarefa => tarefa.ativo)
+          .map(tarefa => new Tarefa(tarefa, lista.cor));
+  
+        return lista;
+      });
   }
+  
   
 
   buscaTarefa(idLista, valor) {
