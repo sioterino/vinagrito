@@ -85,9 +85,10 @@ class DOM {
             const tarefasContainer = lista.querySelector('.tarefas')
 
             listObj.tarefas.filter(tarefa => tarefa.ativo).forEach(tarefa => {
-                const tarefaEl = this.#renderTarefa(tarefa)
-                tarefasContainer.append(tarefaEl)
-            })
+                console.log('Tarefa filtrada:', tarefa);
+                const tarefaEl = this.#renderTarefa(tarefa);
+                tarefasContainer.append(tarefaEl);
+            });
         }
     }
     
