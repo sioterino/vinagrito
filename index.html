@@ -172,8 +172,9 @@
               <div class="searchbar">
                 <span class="icon glass">search</span>
                 <input
+                  class="barra-de-pesquisa"
                   type="text"
-                  id="pesquisa"
+                  id="searchbar"
                   name="searchbar"
                   autocomplete="off"
                   spellcheck="false"
@@ -205,15 +206,33 @@
                 <span class="icon unchecked">check_box_outline_blank</span>
                 <span class="icon checked hide">check_box</span>
                 <h4 class="tarefa-nome">Tarefa Sem Nome</h4>
-                <span class="icon tarefa-more">more_horiz</span>
+                <span class="icon more tarefa-more">more_horiz</span>
             </div>
+
+            <ul class="more-dropdown hide">
+                <li class="more-edit more-li">
+                  <span class="icon edit">edit</span>
+                  <p>Editar</p>
+                </li>
+                <li class="more-del more-li">
+                  <span class="icon delete">delete</span>
+                  <p>Apagar</p>
+                </li>
+                <li class="more-move more-li">
+                  <span class="icon move">pan_tool</span>
+                  <p>Mover</p>
+                </li>
+              </ul>
 
             <blockquote class="tarefa-desc">Descrição da tarefa</blockquote>
 
             <div class="tarefa-info">
-                <p class="prioridade">P1</p>
+                <p class="prioridade p1">P1</p>
                 <p class="prazo">Data Prazo</p>
-                <p class="faltam">0h</p>
+                <div class="faltam">
+                    <p class="tempo">0h</p>
+                    <img src="img/pimentao-vermelho.png" alt="pimentao-vermelho">
+                </div>
             </div>
 
         </div>

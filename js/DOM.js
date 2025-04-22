@@ -47,6 +47,8 @@ class DOM {
 
         const lista = document.querySelector('#lista-template').content.cloneNode(true).querySelector('.lista')
 
+        
+
         lista.id = listObj.idLista
         lista.classList.add(`${listObj.cor}-fundo`)
         lista.classList.add(`${listObj.cor}-borda`)
@@ -61,13 +63,13 @@ class DOM {
 
         if (listObj.tarefas?.length) {
 
+            this.#updateCompletas(lista, listObj)
+
             const tarefasContainer = lista.querySelector('.tarefas')
             
             listObj.tarefas.forEach(tarefa => {
-                console.log(tarefa)
                 const tarefaEl = this.#renderTarefa(tarefa)
                 tarefasContainer.append(tarefaEl)
-
             })
 
         }
@@ -103,7 +105,6 @@ class DOM {
             // editing logic here
         })
 
-        // ✅ Reuse the shared taskDialog instance
         const botao = lista.querySelector('.nova-tarefa')
         this.taskDialog.setBotao(botao)
     }
@@ -131,6 +132,13 @@ class DOM {
         document.querySelector('.fazendo .qtd-listas').textContent = this.#qtdLista
     }
 
+    #updateCompletas(lista, listObj) {
+        const qtdTask = listObj.tarefas?.filter(task => task.ativo).length
+        const qtdDone = listObj.tarefas?.filter(task => task.ativo && task.completa).length
+
+        lista.querySelector('.lista-status').textContent = `${qtdDone}/${qtdTask}`
+    }
+
     #newTask(formObj, idLista) {
         if (idLista) {
             const taskObj = this.controle.novaTarefa(formObj, idLista)
@@ -141,7 +149,6 @@ class DOM {
 
     #renderTarefa(taskObj) {
         const tarefa = document.querySelector('#tarefa-template').content.cloneNode(true).querySelector('.tarefa')
-        console.log(taskObj)
 
         tarefa.id = taskObj.idTarefa
         tarefa.classList.add(`${taskObj.cor}-borda`)
@@ -150,14 +157,73 @@ class DOM {
         tarefa.querySelector('.tarefa-desc').textContent = taskObj.descricao
         tarefa.querySelector('.prioridade').textContent = `${taskObj.prioridade}P`
         tarefa.querySelector('.prazo').textContent = Utils.formatDate(taskObj.prazo)
-        tarefa.querySelector('.faltam').textContent = '0d'
+        tarefa.querySelector('.tempo').textContent = Utils.calculaTempoRestante(taskObj.prazo)
 
-        this.#taskInit(tarefa)
+        this.#taskInit(tarefa, taskObj.idTarefa)
         return tarefa
     }
 
-    #taskInit(tarefa) {
-        // Task-specific event listeners
+    #taskInit(tarefa, idTarefa) {
+        this.#openDropdown(tarefa)
+
+        const task = this.controle.listas
+            .map(l => l.tarefas.find(t => t.idTarefa === idTarefa))
+            .find(task => task !== undefined)
+
+        const list = this.controle.listas.find(l => l.tarefas.some(t => t.idTarefa === idTarefa))
+        const uncheck = tarefa.querySelector('.unchecked')
+        const check = tarefa.querySelector('.checked')
+
+        uncheck.addEventListener('click', () => {
+            uncheck.classList.toggle('hide')
+            check.classList.toggle('hide')
+
+            task.toggleStatus()
+            this.#updateCompletas(tarefa.closest('.lista'), list)
+            this.controle.saveToLocalStorage()
+        })
+        check.addEventListener('click', () => {
+            uncheck.classList.toggle('hide')
+            check.classList.toggle('hide')
+
+            task.toggleStatus()
+            this.#updateCompletas(tarefa.closest('.lista'), list)
+            this.controle.saveToLocalStorage()
+        })
+        
+        tarefa.querySelector('.more-del').addEventListener('click', e => {
+            e.stopPropagation()
+            this.controle.excluirTarefa(list.idLista, idTarefa)
+            this.#updateCompletas(tarefa.closest('.lista'), list)
+            tarefa.remove()
+            this.controle.saveToLocalStorage()
+        })
+        
+        tarefa.querySelector('.more-edit').addEventListener('click', e => {
+            console.log('EDIT')
+        })
+        
+        tarefa.querySelector('.more-move').addEventListener('click', e => {
+            console.log('MOVE')
+        })
+        
+        setTimeout(() => {
+            const lista = tarefa.closest('.lista')
+            lista.querySelector('#searchbar').addEventListener('input', e => {
+                const valor = e.target.value
+                this.controle.buscaTarefa(list.idLista, valor)
+    
+                const tarefasVisiveis = this.controle.getTarefasVisiveis(list.idLista)
+
+                lista.querySelector('.tarefas').innerHTML = ''
+                tarefasVisiveis.forEach(t => {
+                    this.#renderTarefa(t)
+                })
+            })
+        }, 500)
+        
+
+        
     }
 
 }

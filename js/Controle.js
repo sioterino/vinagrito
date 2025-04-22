@@ -49,12 +49,16 @@ class Controle {
     if (data.idTarefa) return
 
     const l = Utils.getListaByID(this.listas, idLista)
-    console.log(l)
 
     const novaTarefa = l.adicionarTarefa(data, l.cor)
 
     this.saveToLocalStorage()
     return novaTarefa
+  }
+
+  excluirTarefa(idLista, idTarefa) {
+    const lista = this.listas.find(l => l.idLista === idLista)
+    lista.removerTarefa(idTarefa)
   }
 
   //salva as listas no LocalStorage
@@ -102,6 +106,12 @@ class Controle {
   getListasVisiveis() {
     //filtra as listas que são ativas e estão visiveis
     return this.listas.filter(lista => lista.ativo && lista.isShown);
+  }
+
+  getTarefasVisiveis(idLista) {
+    const lista = this.listas.find(l => l.idLista === idLista)
+    const tarefas = lista.tarefas.filter(t => t.ativo && t.isShown)
+    return tarefas
   }
 }
 

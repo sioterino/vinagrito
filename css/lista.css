@@ -59,6 +59,7 @@
 }
 
 .more-dropdown {
+    cursor: pointer;
     position: absolute;
     z-index: 100;
     width: fit-content;
@@ -142,6 +143,7 @@
     border-radius: .25rem;
 
     min-width: 220px;
+    height: 42px;
 }
 
 .filtros-select:hover {

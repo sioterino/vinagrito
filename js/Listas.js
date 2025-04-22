@@ -21,9 +21,8 @@ class Lista {
 
   // remove pelo o id
   removerTarefa(idTarefa) {
-    this.tarefas = this.tarefas.filter(
-      (tarefa) => tarefa.IdTarefa !== idTarefa
-    );
+    const tarefa = this.tarefas.find(tarefa => tarefa.idTarefa === idTarefa);
+    tarefa.toggleAtividade()
   }
 
   //ordena as tarefas dependendo do critério que foi passado
@@ -90,17 +89,11 @@ class Lista {
 
   // move uma tarefa dessa lista pra outra lista
   moverTarefa(idTarefa, listaDestino) {
-    const tarefa = this.getTarefaByID(idTarefa);
+    const tarefa = Utils.getTaskByID(idTarefa);
     if (tarefa) {
       this.removerTarefa(idTarefa); //tira da lista atual
       listaDestino.adicionarTarefa(tarefa); //mmove para lista de destino
     }
-  }
-
-
-  // retorna a tarefa com o ID correspondente
-  getTarefaByID(idTarefa) {
-    return this.tarefas.find((tarefa) => tarefa.IdTarefa === idTarefa);
   }
 
 }

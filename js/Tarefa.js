@@ -10,32 +10,29 @@ class Tarefa {
         this.cor = cor;
         this.completa = false;
         this.isShown = true;
-    }
-
-    tarefaCompleta() {
-        this.completa = true;
-    }
-
-    tarefaPendente() {
-        this.completa = false;
+        this.ativo = true;
     }
 
     toggleStatus(){
         this.completa = !this.completa;
     }
 
-    editarDetalhes({ nome, descricao, dataPrazo, hora, prioridade }) {
+    toggleAtividade() {
+        this.ativo = !this.ativo
+    }
+
+    editarDetalhes({ nome, descricao, prazo, hora, prioridade }) {
         this.nome = nome;
         this.descricao = descricao;
-        this.dataPrazo = dataPrazo;
+        this.prazo = prazo;
         this.hora = hora;
         this.prioridade = prioridade;
     }
 
     tarefaAtrasada() {
         const dataAtual = new Date();
-        const dataPrazo = new Date(`${this.data}T${this.hora}`);
-        return !this.completa && dataPrazo < dataAtual;
+        const prazo = new Date(`${this.data}T${this.hora}`);
+        return !this.completa && prazo < dataAtual;
     }
 }
 
