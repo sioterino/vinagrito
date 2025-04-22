@@ -40,7 +40,7 @@ class DOM {
         const listasVisiveis = this.controle.getListasVisiveis()
         this.pendentes.innerHTML = ''
         listasVisiveis.forEach(lista => {
-            this.#renderizarLista(lista)
+            this.#renderizarLista(listaObj, this.controle)
         })
     }
     
@@ -60,37 +60,35 @@ class DOM {
     #newList(formObj, id = null) {
         const listObj = this.controle.adicionar(formObj) || formObj
         
-        this.#renderizarLista(listObj)
+        this.#renderizarLista(listaObj, this.controle)
     }
     
-    #renderizarLista(listObj) {
-        const lista = document.querySelector('#lista-template').content.cloneNode(true).querySelector('.lista')
-        
-        lista.id = listObj.idLista
-        lista.classList.add(`${listObj.cor}-fundo`)
-        lista.classList.add(`${listObj.cor}-borda`)
-        
-        lista.querySelector('.lista-nome').textContent = listObj.nome
-        lista.querySelector('.circle').classList.add(listObj.cor)
-        
-        this.pendentes.append(lista)
-        
-        this.#listInit(lista, listObj)
-        this.#addQtdLista()
-        
-        if (listObj.tarefas?.length) {
+    #renderizarLista(listObj, controle) {
+        const lista = document.querySelector('#lista-template').content.cloneNode(true).querySelector('.lista');
+    
+        lista.id = listObj.idLista;
+        lista.classList.add(`${listObj.cor}-fundo`);
+        lista.classList.add(`${listObj.cor}-borda`);
+        lista.querySelector('.lista-nome').textContent = listObj.nome;
+        lista.querySelector('.circle').classList.add(listObj.cor);
+        this.pendentes.append(lista);
+    
+        this.#listInit(lista, listObj);
+        this.#addQtdLista();
+    
+        const tarefasVisiveis = controle.getTarefasVisiveis(listObj.idLista);
+    
+        if (tarefasVisiveis.length) {
             this.#updateCompletas(lista, listObj);
-            
+    
             const tarefasContainer = lista.querySelector('.tarefas');
-            
-            const tarefasVisiveis = this.controle.getTarefasVisiveis(listObj.idLista);
-            
+    
             tarefasVisiveis.forEach(tarefa => {
-                console.log('Tarefa filtrada:', tarefa);
                 const tarefaEl = this.#renderTarefa(tarefa);
-                tarefasContainer.append(tarefaEl);
-            })
-            
+                if (tarefaEl) {
+                    tarefasContainer.append(tarefaEl);
+                }
+            });
         }
     }
     
