@@ -375,9 +375,19 @@ class DOM {
       console.log("EDIT") // ===============================================================================================================
     })
 
-    tarefa.querySelector(".more-move").addEventListener("click", (e) => {
-      console.log("MOVE") // ===============================================================================================================
+    const moveBotao = tarefa.querySelector(".more-move")
+    console.log(moveBotao)
+    moveBotao.addEventListener("click", (e) => {
+      
+      const moverTarefa = new Dialog(moveBotao, (data) => this.#moverTarefa(data, listObj.idLista))
+      moverTarefa.abrirMover(this.controle.listas, listObj.idLista)
+      
     })
+  }
+  
+  #moverTarefa(data, idListaAntiga) {
+    console.log("MOVE") // ===============================================================================================================
+    console.log(data, idListaAntiga)
   }
 }
 
