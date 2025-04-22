@@ -1,4 +1,4 @@
-import { Lista } from './Listas.js';
+import { Lista } from './Lista.js';
 import { Utils } from './Utils.js';
 
 //adicionar (cria nova lista) - feito
@@ -45,20 +45,28 @@ class Controle {
     }
   }
 
-  novaTarefa(data, idLista) {
-    if (data.idTarefa) return
-
-    const l = Utils.getListaByID(this.listas, idLista)
-
-    const novaTarefa = l.adicionarTarefa(data, l.cor)
-
+  editarLista(idLista, data) {
+    const lista = this.listas.find(lista => lista.idLista === idLista);
+    lista.editar(data);
     this.saveToLocalStorage()
-    return novaTarefa
+    return lista
+  }
+
+  novaTarefa(data, idLista) {
+    if (data.idTarefa) return;
+
+    const l = Utils.getListaByID(this.listas, idLista);
+
+    const novaTarefa = l.adicionarTarefa(data, l.cor);
+
+    this.saveToLocalStorage();
+    return novaTarefa;
   }
 
   excluirTarefa(idLista, idTarefa) {
     const lista = this.listas.find(l => l.idLista === idLista)
     lista.removerTarefa(idTarefa)
+    this.saveToLocalStorage()
   }
 
   //salva as listas no LocalStorage

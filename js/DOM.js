@@ -118,15 +118,34 @@ class DOM {
             lista.remove()
             this.#addQtdLista(false)
         })
+
+        const editarBotao = lista.querySelector('.more-edit')
+        editarBotao.addEventListener('click', e => {
+            e.stopPropagation()
+            const listObj = this.controle.listas.find(l => l.idLista == idLista)
         
-        lista.querySelector('.more-edit').addEventListener('click', e => {
-            // editing logic here
+            // const formData = {
+            //     nome: listObj.nome,
+            //     cor: listObj.cor
+            // }
+        
+            const editarDialog = new Dialog(editarBotao, (data, _) => this.#editarLista(idLista, data))
+            editarDialog.abrirEdicao(listObj, idLista)
         })
         
         const botao = lista.querySelector('.nova-tarefa')
         this.taskDialog.setBotao(botao)
     }
-    
+
+    #editarLista(idLista, newData) {
+        const novaLista = this.controle.editarLista(idLista, newData)
+        const lista = this.pendentes.querySelector(`.lista[id="${idLista}"]`)
+        lista.remove()
+        console.log(novaLista)
+        this.#renderizarLista(novaLista)
+        console.log(this.controle.listas)
+    }  
+
     #toggleLista(idLista = null) {
         this.pendentes.querySelectorAll('.lista').forEach(l => {
             const alvo = l.querySelector('.content')
@@ -226,7 +245,6 @@ class DOM {
             this.controle.excluirTarefa(list.idLista, idTarefa)
             this.#updateCompletas(tarefa.closest('.lista'), list)
             tarefa.remove()
-            this.controle.saveToLocalStorage()
         })
         
         tarefa.querySelector('.more-edit').addEventListener('click', e => {
@@ -269,8 +287,6 @@ class Dialog {
         if (botao) {
             this.setBotao(botao)
         }
-        
-        // default to task dialog (you can adjust logic if needed)
         if (botao?.classList.contains('nova-lista')) {
             this.#dialog = document.querySelector('#nova-lista')
         } else {
@@ -314,6 +330,17 @@ class Dialog {
         
         this.#idLista = null
     }
+
+    abrirEdicao(data, idLista) {
+        this.#idLista = idLista
+        this.#dialog.showModal()
+    
+        for (const [key, value] of Object.entries(data)) {
+            const field = this.form.querySelector(`[name="${key}"]`)
+            if (field) field.value = value
+        }
+    }
+    
 }
 
 export { DOM, Dialog }

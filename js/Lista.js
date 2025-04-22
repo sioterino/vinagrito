@@ -82,9 +82,9 @@ class Lista {
   }
 
   // altera o nome e a cor da lista
-  editar(novoNome, novaCor) {
-    this.nome = novoNome;
-    this.cor = novaCor;
+  editar({nome, cor}) {
+    this.nome = nome;
+    this.cor = cor;
   }
 
   // move uma tarefa dessa lista pra outra lista
