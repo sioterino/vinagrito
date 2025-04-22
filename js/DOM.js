@@ -54,7 +54,6 @@ class DOM {
     
     const tarefasVisiveis = this.controle.getTarefasVisiveis(idLista)
     tarefasVisiveis.forEach(taskObj => {
-        // console.log('taskObj: ', taskObj)
         const t = this.#renderTarefa(taskObj)
         tarefas.append(t)
     })
@@ -166,7 +165,31 @@ class DOM {
         this.handleSearch(e, false, idLista)
     })
 
+    const ordenar = lista.querySelector('.select-order')
+    ordenar.addEventListener('change', e => {
+        const value = e.target.value
+        const ordenado = Utils.getListaByID(this.controle.listas, idLista).ordenarTarefa(value)
 
+        const tarefas = lista.querySelector('.tarefas')
+        tarefas.innerHTML = ''
+        ordenado.forEach(taskObj => {
+            const t = this.#renderTarefa(taskObj)
+            tarefas.append(t)
+        })
+    })
+
+    const filtrar = lista.querySelector('.select-filter')
+    filtrar.addEventListener('change', e => {
+        const value = e.target.value
+        const filtrado = Utils.getListaByID(this.controle.listas, idLista).filtrarTarefa(value)
+
+        const tarefas = lista.querySelector('.tarefas')
+        tarefas.innerHTML = ''
+        filtrado.forEach(taskObj => {
+            const t = this.#renderTarefa(taskObj)
+            tarefas.append(t)
+        })
+    })
 
 
     // =====================================================================================================================================
@@ -264,6 +287,11 @@ class DOM {
     tarefa.classList.add(`${taskObj.cor}-borda`)
     tarefa.classList.add(`${taskObj.cor}-borda`)
 
+    if (taskObj.completa) {
+        tarefa.querySelector('unchecked').classList.add('hide')
+        tarefa.querySelector('checked').classList.remove('hide')
+    }
+
     // NOME
     tarefa.querySelector(".tarefa-nome").textContent = taskObj.nome
     
@@ -296,10 +324,8 @@ class DOM {
 
     const idTarefa = taskObj.idTarefa
     const listObj = this.controle.listas.find( l => {
-        // console.log(idTarefa)
         return l.tarefas.some( t => t.idTarefa === idTarefa )
     })
-    // console.log(listObj)
     // elemento DIV da lista inteira
     const lista = document.querySelector(`.lista[id="${listObj.idLista}"]`)
 
@@ -313,7 +339,7 @@ class DOM {
       uncheck.classList.toggle("hide")
       check.classList.toggle("hide")
       // atualiza informações por trás
-      task.toggleStatus()
+      taskObj.toggleStatus()
       // atualiza contador de tarefas lista
       this.#updateCompletas(lista, listObj)
       this.controle.saveToLocalStorage()
@@ -323,7 +349,7 @@ class DOM {
       uncheck.classList.toggle("hide")
       check.classList.toggle("hide")
       // atualiza informações por trás
-      task.toggleStatus()
+      taskObj.toggleStatus()
       // atualiza contador de tarefas lista
       this.#updateCompletas(lista, listObj)
       this.controle.saveToLocalStorage()

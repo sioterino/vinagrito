@@ -143,6 +143,8 @@
                 <!-- filtro status -->
                 <div class="filter-wrapper">
                   <select class="select-filter filtros-select">
+                    <option value="" selected disabled>Filtrar</option>
+
                     <option value="todos">Todos</option>
                     <option value="pendentes">Pendentes</option>
                     <option value="completos">Completos</option>
@@ -153,10 +155,16 @@
                 <!-- filtro prioridade -->
                 <div class="filter-wrapper">
                   <select class="select-order filtros-select">
-                    <option value="mais-importante">Mais Importante</option>
-                    <option value="menos-importante">Menos Importante</option>
-                    <option value="mais-urgente">Mais Urgente</option>
-                    <option value="menos-urgente">Menos Urgente</option>
+                    <option value="" selected disabled>Ordenar</option>
+
+                    <option value="prioridadeDescrescente">Mais Importante</option>
+                    <option value="prioridadeCrescente">Menos Importante</option>
+
+                    <option value="dataCrescente">Mais Urgente</option>
+                    <option value="dataDecrescente">Menos Urgente</option>
+
+                    <option value="descriçãoMaior">Maior Descrição</option>
+                    <option value="descriçãoMenor">Menor Descrição</option>
                   </select>
                   <span class="icon arrow">keyboard_arrow_up</span>
                 </div>

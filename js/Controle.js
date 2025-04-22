@@ -49,8 +49,8 @@ class Controle {
   editarLista(idLista, data) {
     const lista = Utils.getListaByID(this.listas, idLista);
     lista.editar(data);
-    this.saveToLocalStorage()
-    return lista
+    this.saveToLocalStorage();
+    return lista;
   }
 
   novaTarefa(data, idLista) {
@@ -66,8 +66,8 @@ class Controle {
 
   excluirTarefa(idLista, idTarefa) {
     const lista = Utils.getListaByID(this.listas, idLista);
-    lista.removerTarefa(idTarefa)
-    this.saveToLocalStorage()
+    lista.removerTarefa(idTarefa);
+    this.saveToLocalStorage();
   }
 
   //salva as listas no LocalStorage
@@ -97,9 +97,9 @@ class Controle {
     lista.tarefas.forEach(tarefa => {
       const corresponde =
       tarefa.nome?.toLowerCase().includes(valor.toLowerCase()) ||
-      tarefa.descricao?.toLowerCase().includes(valor.toLowerCase())
+      tarefa.descricao?.toLowerCase().includes(valor.toLowerCase());
 
-      tarefa.isShown = corresponde
+      tarefa.isShown = corresponde;
     })
   }
 
@@ -124,9 +124,8 @@ class Controle {
 
   getTarefasVisiveis(idLista) {
     const lista = Utils.getListaByID(this.listas, idLista);
-    const tarefas = lista.tarefas.filter(t => t.ativo && t.isShown)
-    console.log('tarefas: ', tarefas)
-    return tarefas
+    const tarefas = lista.tarefas.filter(t => t.ativo && t.isShown);
+    return tarefas;
   }
 }
 
