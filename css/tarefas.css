@@ -44,7 +44,18 @@
     padding: .3rem .6rem;
     border-radius: 1rem;
     font-weight: 600;
+}
+
+.p1 {
     background-color: var(--vermelho);
+}
+
+.p2 {
+    background-color: var(--azul);
+}
+
+.p3 {
+    background-color: var(--amarelo);
 }
 
 .tarefa .prazo {
@@ -55,6 +66,10 @@
 .tarefa .faltam {
     display: flex;
     gap: .3rem;
+
+    background-color: var(--vermelho-escuro);
+    padding: .6rem .6rem .4rem 1rem;
+    border-radius: 1.5rem;
 }
 
 .tarefa img {
@@ -78,3 +93,4 @@
     font-weight: 400;
     cursor: pointer;
 }
+

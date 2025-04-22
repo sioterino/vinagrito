@@ -1,5 +1,6 @@
 import { Utils } from "./Utils.js"
 import { Controle } from "./Controle.js"
+import { Dialog } from "./Dialog.js"
 
 class DOM {
     
@@ -207,7 +208,12 @@ class DOM {
         tarefa.querySelector('.tarefa-desc').textContent = taskObj.descricao
         tarefa.querySelector('.prioridade').textContent = `${taskObj.prioridade}P`
         tarefa.querySelector('.prazo').textContent = Utils.formatDate(taskObj.prazo)
-        tarefa.querySelector('.tempo').textContent = Utils.calculaTempoRestante(taskObj.prazo)
+
+        const tempo = Utils.calculaTempoRestante(taskObj.prazo)
+        const pimentao = Utils.getPimentao(tempo)
+        console.log(pimentao)
+        tarefa.querySelector('.tempo').textContent = tempo
+        tarefa.querySelector('.pimentao-tempo').src = pimentao
         
         this.#taskInit(tarefa, taskObj.idTarefa)
         return tarefa
@@ -274,74 +280,4 @@ class DOM {
     }
 }
 
-class Dialog {
-    
-    #botao
-    #dialog
-    #callback
-    #idLista = null
-    
-    constructor(botao, callback = null) {
-        this.#callback = callback
-        this.data = {}
-        
-        if (botao) {
-            this.setBotao(botao)
-        }
-        if (botao?.classList.contains('nova-lista')) {
-            this.#dialog = document.querySelector('#nova-lista')
-        } else {
-            this.#dialog = document.querySelector('#nova-tarefa')
-        }
-        
-        this.form = this.#dialog.querySelector('form')
-        this.#dialog.addEventListener('click', e => this.#fecharModal(e))
-        this.form.addEventListener('submit', e => this.#formSubmit(e))
-    }
-    
-    setBotao(botao) {
-        this.#botao = botao
-        this.#botao.addEventListener('click', e => {
-            this.#dialog.showModal()
-            this.#idLista = e.target.closest('.lista')?.id ?? null
-        })
-    }
-    
-    #fecharModal(e) {
-        if (e.target.tagName.toLowerCase() === 'dialog') {
-            this.#dialog.close()
-            this.form.reset()
-        }
-    }
-    
-    #formSubmit(e) {
-        e.preventDefault()
-        
-        const input = new FormData(this.form)
-        input.forEach((val, key) => {
-            this.data[key] = val
-        })
-        
-        this.#dialog.close()
-        e.target.reset()
-        
-        if (this.#callback !== null) {
-            this.#callback(this.data, this.#idLista)
-        }
-        
-        this.#idLista = null
-    }
-
-    abrirEdicao(data, idLista) {
-        this.#idLista = idLista
-        this.#dialog.showModal()
-    
-        for (const [key, value] of Object.entries(data)) {
-            const field = this.form.querySelector(`[name="${key}"]`)
-            if (field) field.value = value
-        }
-    }
-    
-}
-
-export { DOM, Dialog }
+export { DOM }

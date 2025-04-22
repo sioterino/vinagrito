@@ -101,6 +101,24 @@ class Utils {
         else return Math.floor(Math.random() * (max - min)) + min
     }
 
+    static getPimentao(str) {
+        if (str.includes('-')) {
+            return '../img/podre-claro.png'
+        }
+
+        else if (str.includes('d')) {
+            return '../img/pimentao-vermelho.png'
+        }
+
+        else if (str.includes('h')) {
+            return '../img/pimentao-amarelo.png'
+        }
+
+        else if (str.includes('m')) {
+            return '../img/pimentao-verde.png'
+        }
+    }
+
 }
 
 export { Utils }
