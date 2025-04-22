@@ -8,7 +8,6 @@ class DOM {
         this.controle = new Controle()
         this.pendentes = document.querySelector('.listas')
         
-        // NEW: Shared task dialog instance
         this.taskDialog = new Dialog(null, (data, id) => this.#newTask(data, id))
     }
     
@@ -59,11 +58,11 @@ class DOM {
     
     #newList(formObj, id = null) {
         const listObj = this.controle.adicionar(formObj) || formObj
-        
-        this.#renderizarLista(listaObj, this.controle)
+
+        this.#renderizarLista(listObj)
     }
     
-    #renderizarLista(listObj, controle) {
+    #renderizarLista(listObj) {
         const lista = document.querySelector('#lista-template').content.cloneNode(true).querySelector('.lista');
     
         lista.id = listObj.idLista;
@@ -76,19 +75,26 @@ class DOM {
         this.#listInit(lista, listObj);
         this.#addQtdLista();
     
-        const tarefasVisiveis = controle.getTarefasVisiveis(listObj.idLista);
+        const tarefasVisiveis = this.controle.getTarefasVisiveis(listObj.idLista);
     
         if (tarefasVisiveis.length) {
+
             this.#updateCompletas(lista, listObj);
     
             const tarefasContainer = lista.querySelector('.tarefas');
     
-            tarefasVisiveis.forEach(tarefa => {
-                const tarefaEl = this.#renderTarefa(tarefa);
-                if (tarefaEl) {
-                    tarefasContainer.append(tarefaEl);
-                }
-            });
+            tarefasVisiveis.forEach(t => {
+
+                /*
+                    CORREÇÃO PROBLEMA DA EXCLUSAO DAS LISTAS ================================================================================
+                */
+                console.log(t.ativo)
+                console.log(this.controle.listas)
+
+                const tarefaEl = this.#renderTarefa(t)
+                tarefasContainer.append(tarefaEl)
+
+            })
         }
     }
     
@@ -124,11 +130,6 @@ class DOM {
             e.stopPropagation()
             const listObj = this.controle.listas.find(l => l.idLista == idLista)
         
-            // const formData = {
-            //     nome: listObj.nome,
-            //     cor: listObj.cor
-            // }
-        
             const editarDialog = new Dialog(editarBotao, (data, _) => this.#editarLista(idLista, data))
             editarDialog.abrirEdicao(listObj, idLista)
         })
@@ -141,9 +142,9 @@ class DOM {
         const novaLista = this.controle.editarLista(idLista, newData)
         const lista = this.pendentes.querySelector(`.lista[id="${idLista}"]`)
         lista.remove()
-        console.log(novaLista)
+        // console.log(novaLista)
         this.#renderizarLista(novaLista)
-        console.log(this.controle.listas)
+        // console.log(this.controle.listas)
     }  
 
     #toggleLista(idLista = null) {
@@ -170,8 +171,8 @@ class DOM {
     }
     
     #updateCompletas(lista, listObj) {
-        console.log('lista: ', lista)
-        console.log('listObj: ', listObj)
+        // console.log('lista: ', lista)
+        // console.log('listObj: ', listObj)
         
         const qtdTask = listObj.tarefas?.filter(task => task.ativo).length
         const qtdDone = listObj.tarefas?.filter(task => task.ativo && task.completa).length
