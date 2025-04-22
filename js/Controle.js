@@ -70,6 +70,16 @@ class Controle {
     this.saveToLocalStorage();
   }
 
+  moverTarefa(idTarefa, idOrigem, idDestino) {
+    const origem = Utils.getListaByID(this.listas, idOrigem)
+    const destino = Utils.getListaByID(this.listas, idDestino)
+
+    origem.moverTarefa(idTarefa, destino)
+    this.saveToLocalStorage()
+    location.reload()
+
+  }
+
   //salva as listas no LocalStorage
   saveToLocalStorage() {
     localStorage.setItem('listas', JSON.stringify(this.listas));
@@ -132,8 +142,7 @@ class Controle {
         tarefa.isShown = corresponde;
       });
     });
-  }
-  
+  }  
 
   //método para obter as listas que são visiveis
   getListasVisiveis() {

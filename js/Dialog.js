@@ -63,6 +63,7 @@ class Dialog {
         }
         
         this.#idLista = null
+        this.#dialog.querySelector('#mover-para').textContent = ''
     }
 
     abrirEdicao(data, idLista) {

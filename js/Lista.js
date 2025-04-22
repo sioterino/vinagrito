@@ -16,12 +16,14 @@ class Lista {
   adicionarTarefa(data, cor) {
     const tarefa  = new Tarefa(data, cor)
     this.tarefas.push(tarefa);
+    tarefa.ativo = true
+    tarefa.isShown = true
     return tarefa
   }
 
   // remove pelo o id
   removerTarefa(idTarefa) {
-    const tarefa = this.tarefas.find(tarefa => tarefa.idTarefa === idTarefa);
+    const tarefa = Utils.getTaskByID(this.tarefas, idTarefa);
     tarefa.toggleAtividade()
     tarefa.isShown = false
   }
@@ -96,11 +98,11 @@ class Lista {
   }
 
   // move uma tarefa dessa lista pra outra lista
-  moverTarefa(idTarefa, listaDestino) {
-    const tarefa = Utils.getTaskByID(idTarefa);
+  moverTarefa(idTarefa, destino) {
+    const tarefa = Utils.getTaskByID(this.tarefas, idTarefa);
     if (tarefa) {
       this.removerTarefa(idTarefa); //tira da lista atual
-      listaDestino.adicionarTarefa(tarefa); //mmove para lista de destino
+      destino.adicionarTarefa(tarefa, 'vermelho'); //mmove para lista de destino
     }
   }
 

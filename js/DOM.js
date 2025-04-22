@@ -18,6 +18,8 @@ class DOM {
     // carrega listas do localStorage para dentro do Controle
     this.controle.loadFromLocalStorage()
     
+    this.pendentes.innerHTML = ''
+
     // itera o as listas no Controle e renderiza elas
     this.controle.listas.forEach(listObj => {
       this.#renderizarLista( listObj )
@@ -263,7 +265,7 @@ class DOM {
     lista.querySelector(".lista-status").textContent = `${qtdDone}/${qtdTask}`
   }
 
-  #newTask(formObj, idLista) {
+  #newTask(formObj, listObj) {
     // CRIA NOVA TAREFA
 
     formObj.completo = false
@@ -271,12 +273,12 @@ class DOM {
     formObj.ativo = true
 
     // cria objeto com nova tarefa, incluindo ID e etc
-    const taskObj = this.controle.novaTarefa(formObj, idLista)
+    const taskObj = this.controle.novaTarefa(formObj, listObj.idLista)
     // renderiza nova tarefa na ágina usando o obj ^ acima
     const tarefa = this.#renderTarefa(taskObj)
 
     // carrega elemento LISTA e adiciona TAREFA ao container de tarefas
-    const lista = this.pendentes.querySelector(`.lista[id="${idLista}"]`)
+    const lista = this.pendentes.querySelector(`.lista[id="${listObj.idLista}"]`)
     lista.querySelector('.tarefas').append(tarefa)
 
     // atualiza o contador de tarefas
@@ -376,18 +378,18 @@ class DOM {
     })
 
     const moveBotao = tarefa.querySelector(".more-move")
-    console.log(moveBotao)
     moveBotao.addEventListener("click", (e) => {
       
-      const moverTarefa = new Dialog(moveBotao, (data) => this.#moverTarefa(data, listObj.idLista))
+      const moverTarefa = new Dialog(moveBotao, (data) => this.#moverTarefa(data, idTarefa, listObj.idLista, tarefa))
       moverTarefa.abrirMover(this.controle.listas, listObj.idLista)
       
     })
   }
   
-  #moverTarefa(data, idListaAntiga) {
-    console.log("MOVE") // ===============================================================================================================
-    console.log(data, idListaAntiga)
+  #moverTarefa(data, idTarefa, idOrigem, tarefa) {
+    this.controle.moverTarefa( idTarefa, idOrigem, data['mover-para'] )
+
+    this.loadListasFromStorage()
   }
 }
 
