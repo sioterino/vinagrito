@@ -150,6 +150,9 @@ class DOM {
     }
 
     #updateCompletas(lista, listObj) {
+        console.log('lista: ', lista)
+        console.log('listObj: ', listObj)
+
         const qtdTask = listObj.tarefas?.filter(task => task.ativo).length
         const qtdDone = listObj.tarefas?.filter(task => task.ativo && task.completa).length
 
@@ -159,12 +162,20 @@ class DOM {
     #newTask(formObj, idLista) {
         if (idLista) {
             const taskObj = this.controle.novaTarefa(formObj, idLista)
+
             const tarefa = this.#renderTarefa(taskObj)
-            this.pendentes.querySelector(`.lista[id="${idLista}"] .tarefas`).append(tarefa)
+            
+            const listObj = this.controle.listas.find(l => l.tarefas.some(t => t.idTarefa === taskObj.idTarefa))
+            const tarefasDiv = this.pendentes.querySelector(`.lista[id="${idLista}"] .tarefas`)
+            tarefasDiv.append(tarefa)
+
+            this.#updateCompletas(tarefasDiv.closest('.lista'), listObj)
+
         }
     }
-
+    
     #renderTarefa(taskObj) {
+        
         const tarefa = document.querySelector('#tarefa-template').content.cloneNode(true).querySelector('.tarefa')
 
         tarefa.id = taskObj.idTarefa
