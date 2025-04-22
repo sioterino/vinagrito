@@ -44,36 +44,38 @@ class DOM {
 
     #newList(formObj, id = null) {
         const listObj = this.controle.adicionar(formObj) || formObj
-
+    
+        this.#renderizarLista(listObj)
+    }
+    
+    #renderizarLista(listObj) {
         const lista = document.querySelector('#lista-template').content.cloneNode(true).querySelector('.lista')
-
-        
-
+    
         lista.id = listObj.idLista
         lista.classList.add(`${listObj.cor}-fundo`)
         lista.classList.add(`${listObj.cor}-borda`)
-
+    
         lista.querySelector('.lista-nome').textContent = listObj.nome
         lista.querySelector('.circle').classList.add(listObj.cor)
-
+    
         this.pendentes.append(lista)
-
+    
         this.#listInit(lista, listObj)
         this.#addQtdLista()
-
+    
         if (listObj.tarefas?.length) {
 
             this.#updateCompletas(lista, listObj)
-
+    
             const tarefasContainer = lista.querySelector('.tarefas')
-            
+
             listObj.tarefas.forEach(tarefa => {
                 const tarefaEl = this.#renderTarefa(tarefa)
                 tarefasContainer.append(tarefaEl)
             })
-
         }
     }
+    
 
     #listInit(lista, { idLista }) {
         lista.addEventListener('click', e => {
