@@ -47,10 +47,10 @@ class Controle {
   }
 
   editarLista(idLista, data) {
-    const lista = Utils.getListaByID(this.listas, idLista);
-    lista.editar(data);
-    this.saveToLocalStorage();
-    return lista;
+      const lista = Utils.getListaByID(this.listas, idLista);
+      lista.editar(data);
+      this.saveToLocalStorage();
+      return lista;
   }
 
   novaTarefa(data, idLista) {
@@ -94,10 +94,12 @@ class Controle {
   
   buscaTarefa(idLista, valor) {
     const lista = Utils.getListaByID(this.listas, idLista);
+
     lista.tarefas.forEach(tarefa => {
       const corresponde =
       tarefa.nome?.toLowerCase().includes(valor.toLowerCase()) ||
-      tarefa.descricao?.toLowerCase().includes(valor.toLowerCase());
+      tarefa.descricao?.toLowerCase().includes(valor.toLowerCase()) ||
+      Utils.formatDate(tarefa.prazo, 'long').includes(valor.toLowerCase());
 
       tarefa.isShown = corresponde;
     })
@@ -106,15 +108,32 @@ class Controle {
   //filtra a visibilidade das listas com base no valor procurado
   buscaLista(valor) {
     this.listas.forEach(lista => {
-      //verifica se o valor da lista corresponde ao que o usuario está buscando
-      const corresponde =
+      // Verifica se o nome ou a cor da lista correspondem ao valor
+      const correspondeLista =
         lista.nome.toLowerCase().includes(valor.toLowerCase()) ||
         lista.cor.toLowerCase().includes(valor.toLowerCase());
-
-      //atualiza a visibilidade da lista com base no resultado da comparaçao
-      lista.isShown = corresponde;
-    })
+  
+      // Verifica se alguma tarefa dentro da lista corresponde ao valor
+      const correspondeTarefa = lista.tarefas?.some(tarefa =>
+        tarefa.nome?.toLowerCase().includes(valor.toLowerCase()) ||
+        tarefa.descricao?.toLowerCase().includes(valor.toLowerCase()) ||
+        Utils.formatDate(tarefa.prazo, 'long').includes(valor.toLowerCase())
+      );
+  
+      // Atualiza a visibilidade da lista com base na correspondência da lista ou de alguma tarefa
+      lista.isShown = correspondeLista || correspondeTarefa;
+  
+      // Se quiser também atualizar a visibilidade das tarefas dentro da lista (como na buscaTarefa)
+      lista.tarefas?.forEach(tarefa => {
+        const corresponde =
+          tarefa.nome?.toLowerCase().includes(valor.toLowerCase()) ||
+          tarefa.descricao?.toLowerCase().includes(valor.toLowerCase()) ||
+          Utils.formatDate(tarefa.prazo, 'long').includes(valor.toLowerCase());
+        tarefa.isShown = corresponde;
+      });
+    });
   }
+  
 
   //método para obter as listas que são visiveis
   getListasVisiveis() {

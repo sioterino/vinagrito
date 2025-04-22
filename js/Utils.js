@@ -45,13 +45,13 @@ class Utils {
 
     }
 
-    static formatDate(input) {
+    static formatDate(input, monthMethod = 'short') {
         const data = new Date(input)
     
         if (!isNaN(data)) {
             const options = {
                 day: '2-digit',
-                month: 'short',
+                month: monthMethod,
                 year: 'numeric',
                 hour: '2-digit',
                 minute: '2-digit',
