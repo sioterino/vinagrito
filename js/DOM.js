@@ -89,8 +89,8 @@ class DOM {
                 /*
                     CORREÇÃO PROBLEMA DA EXCLUSAO DAS LISTAS ================================================================================
                 */
-                console.log(t.ativo)
-                console.log(this.controle.listas)
+                // console.log(t.ativo)
+                // console.log(this.controle.listas)
 
                 const tarefaEl = this.#renderTarefa(t)
                 tarefasContainer.append(tarefaEl)
@@ -211,46 +211,52 @@ class DOM {
 
         const tempo = Utils.calculaTempoRestante(taskObj.prazo)
         const pimentao = Utils.getPimentao(tempo)
-        console.log(pimentao)
         tarefa.querySelector('.tempo').textContent = tempo
         tarefa.querySelector('.pimentao-tempo').src = pimentao
         
-        this.#taskInit(tarefa, taskObj.idTarefa)
+        this.#taskInit(tarefa, taskObj)
         return tarefa
     }
     
-    #taskInit(tarefa, idTarefa) {
+    #taskInit(tarefa, taskObj) {
+        const idTarefa = taskObj.idTarefa
+        const listObj = this.controle.listas.find(l => l.tarefas.some(t => t.idTarefa === idTarefa))
+        // elemento DIV da lista inteira
+        const lista = document.querySelector(`.lista[id="${listObj.idLista}"]`)
+        
+        // abre fecha o dropdown MORE
         this.#openDropdown(tarefa)
-        
-        const task = this.controle.listas
-        .map(l => l.tarefas.find(t => t.idTarefa === idTarefa))
-        .find(task => task !== undefined)
-        
-        const list = this.controle.listas.find(l => l.tarefas.some(t => t.idTarefa === idTarefa))
+
         const uncheck = tarefa.querySelector('.unchecked')
         const check = tarefa.querySelector('.checked')
-        
         uncheck.addEventListener('click', () => {
+            // marca a caixa de seleção
             uncheck.classList.toggle('hide')
             check.classList.toggle('hide')
-            
+            // atualiza informações por trás
             task.toggleStatus()
-            this.#updateCompletas(tarefa.closest('.lista'), list)
+            // atualiza contador de tarefas lista
+            this.#updateCompletas(lista, listObj)
             this.controle.saveToLocalStorage()
         })
         check.addEventListener('click', () => {
+            // desmarca a caixa de seleção
             uncheck.classList.toggle('hide')
             check.classList.toggle('hide')
-            
+            // atualiza informações por trás
             task.toggleStatus()
-            this.#updateCompletas(tarefa.closest('.lista'), list)
+            // atualiza contador de tarefas lista
+            this.#updateCompletas(lista, listObj)
             this.controle.saveToLocalStorage()
         })
         
+        // deleta tarefas > ERROS A CORRIGIR ===============================================================================================
         tarefa.querySelector('.more-del').addEventListener('click', e => {
             e.stopPropagation()
-            this.controle.excluirTarefa(list.idLista, idTarefa)
-            this.#updateCompletas(tarefa.closest('.lista'), list)
+
+            this.controle.excluirTarefa(listObj.idLista, idTarefa)
+            this.#updateCompletas(lista, listObj)
+
             tarefa.remove()
         })
         
@@ -261,22 +267,6 @@ class DOM {
         tarefa.querySelector('.more-move').addEventListener('click', e => {
             console.log('MOVE')
         })
-        
-        setTimeout(() => {
-            const lista = tarefa.closest('.lista')
-            lista.querySelector('#searchbar').addEventListener('input', e => {
-                const valor = e.target.value
-                this.controle.buscaTarefa(list.idLista, valor)
-                
-                const tarefasVisiveis = this.controle.getTarefasVisiveis(list.idLista)
-                
-                lista.querySelector('.tarefas').innerHTML = ''
-                tarefasVisiveis.forEach(t => {
-                    const tarefaEl = this.#renderTarefa(t)
-                    lista.querySelector('.tarefas').append(tarefaEl)
-                })
-            })
-        }, 500)
     }
 }
 
