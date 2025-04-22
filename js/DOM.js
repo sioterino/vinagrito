@@ -13,6 +13,8 @@ class DOM {
     }
 
     pageInit() {
+        this.#favicon()
+
         const criarLista = document.querySelector('.nova-lista')
         new Dialog(criarLista, (data, id) => this.#newList(data, id))
 
@@ -40,6 +42,19 @@ class DOM {
         listasVisiveis.forEach(lista => {
             this.#renderizarLista(lista)
         })
+    }
+
+    #favicon() {
+        const icons = [
+            '../img/pimentao-vermelho.png',
+            '../img/pimentao-amarelo.png',
+            '../img/pimentao-verde.png',
+        ]
+        
+        const img = icons[Utils.randint(2)]
+        
+        document.querySelector('#favicon').href = img
+        document.querySelector('.logo').src = img
     }
 
     #newList(formObj, id = null) {
