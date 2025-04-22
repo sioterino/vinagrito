@@ -37,7 +37,7 @@ class Controle {
 
   //método para remover uma lista
   remover(idLista) {
-    const lista = this.listas.find(lista => lista.idLista === idLista);
+    const lista = Utils.getListaByID(this.listas, idLista);
 
     if (lista) {
       lista.isShown = false;
@@ -47,7 +47,7 @@ class Controle {
   }
 
   editarLista(idLista, data) {
-    const lista = this.listas.find(lista => lista.idLista === idLista);
+    const lista = Utils.getListaByID(this.listas, idLista);
     lista.editar(data);
     this.saveToLocalStorage()
     return lista
@@ -65,10 +65,8 @@ class Controle {
   }
 
   excluirTarefa(idLista, idTarefa) {
-    const lista = this.listas.find(l => l.idLista === idLista)
+    const lista = Utils.getListaByID(this.listas, idLista);
     lista.removerTarefa(idTarefa)
-    console.log(lista)
-    console.log(this.listas)
     this.saveToLocalStorage()
   }
 
@@ -94,18 +92,15 @@ class Controle {
       });
   }
   
-  
-
   buscaTarefa(idLista, valor) {
-    const lista = this.listas.find(lista => lista.idLista === idLista);
-  
-    return lista.tarefas.forEach(tarefa => {
+    const lista = Utils.getListaByID(this.listas, idLista);
+    lista.tarefas.forEach(tarefa => {
       const corresponde =
       tarefa.nome?.toLowerCase().includes(valor.toLowerCase()) ||
       tarefa.descricao?.toLowerCase().includes(valor.toLowerCase())
 
       tarefa.isShown = corresponde
-  })
+    })
   }
 
   //filtra a visibilidade das listas com base no valor procurado
@@ -118,7 +113,7 @@ class Controle {
 
       //atualiza a visibilidade da lista com base no resultado da comparaçao
       lista.isShown = corresponde;
-    });
+    })
   }
 
   //método para obter as listas que são visiveis
@@ -128,8 +123,9 @@ class Controle {
   }
 
   getTarefasVisiveis(idLista) {
-    const lista = this.listas.find(l => l.idLista === idLista)
+    const lista = Utils.getListaByID(this.listas, idLista);
     const tarefas = lista.tarefas.filter(t => t.ativo && t.isShown)
+    console.log('tarefas: ', tarefas)
     return tarefas
   }
 }

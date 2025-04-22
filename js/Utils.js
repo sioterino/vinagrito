@@ -89,7 +89,7 @@ class Utils {
 
     static getListaByID(listas, id) {
         return listas.find(item => item.idLista === id)
-    } 
+    }
 
     static getTaskByID(tarefas, id) {
         return tarefas.find(item => item.idTarefa === id)
