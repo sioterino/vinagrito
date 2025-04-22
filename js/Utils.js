@@ -95,6 +95,12 @@ class Utils {
         return tarefas.find(item => item.idTarefa === id)
     }
 
+    static randint(max, min = 0, inclusive = true) {
+        if (inclusive) return Math.floor(Math.random() * (max - min + 1)) + min
+        
+        else return Math.floor(Math.random() * (max - min)) + min
+    }
+
 }
 
 export { Utils }
