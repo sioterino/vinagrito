@@ -42,6 +42,7 @@ class Dialog {
         e.preventDefault()
         
         const input = new FormData(this.form)
+
         input.forEach((val, key) => {
             this.data[key] = val
         })

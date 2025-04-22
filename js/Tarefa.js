@@ -1,16 +1,16 @@
 import { Utils } from "./Utils.js"
 
 class Tarefa {
-    constructor({ nome, descricao, prazo, prioridade }, cor) {
+    constructor(taskObj, cor) {
         this.idTarefa = Utils.novoID('tarefa');
-        this.nome = nome;
-        this.descricao = descricao;
-        this.prazo = prazo;
-        this.prioridade = prioridade;
+        this.nome = taskObj.nome;
+        this.descricao = taskObj.descricao;
+        this.prazo = taskObj.prazo;
+        this.prioridade = taskObj.prioridade;
         this.cor = cor;
-        this.completa = false;
-        this.isShown = true;
-        this.ativo = true;
+        this.completa = taskObj.completa;
+        this.isShown = taskObj.isShown;
+        this.ativo = taskObj.ativo;
     }
 
     toggleStatus(){

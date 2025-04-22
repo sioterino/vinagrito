@@ -183,6 +183,8 @@ class DOM {
         const value = e.target.value
         const filtrado = Utils.getListaByID(this.controle.listas, idLista).filtrarTarefa(value)
 
+        console.log(filtrado)
+
         const tarefas = lista.querySelector('.tarefas')
         tarefas.innerHTML = ''
         filtrado.forEach(taskObj => {
@@ -190,7 +192,6 @@ class DOM {
             tarefas.append(t)
         })
     })
-
 
     // =====================================================================================================================================
 
@@ -265,6 +266,10 @@ class DOM {
   #newTask(formObj, idLista) {
     // CRIA NOVA TAREFA
 
+    formObj.completo = false
+    formObj.isShown = true
+    formObj.ativo = true
+
     // cria objeto com nova tarefa, incluindo ID e etc
     const taskObj = this.controle.novaTarefa(formObj, idLista)
     // renderiza nova tarefa na ágina usando o obj ^ acima
@@ -288,8 +293,8 @@ class DOM {
     tarefa.classList.add(`${taskObj.cor}-borda`)
 
     if (taskObj.completa) {
-        tarefa.querySelector('unchecked').classList.add('hide')
-        tarefa.querySelector('checked').classList.remove('hide')
+        tarefa.querySelector('.unchecked').classList.add('hide')
+        tarefa.querySelector('.checked').classList.remove('hide')
     }
 
     // NOME

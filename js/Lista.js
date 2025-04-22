@@ -83,12 +83,11 @@ class Lista {
   // }
 
   filtrarTarefa(criterio = null) {
-    switch (criterio) {
-      case 'pendentes': return this.tarefas.filter(t => !this.completa)
-      case 'completos': return this.tarefas.filter(t => this.completa)
-      default: return this.tarefas
-    }
+    if (criterio === 'pendentes') return this.tarefas.filter(t => !t.completa);
+    if (criterio === 'completos') return this.tarefas.filter(t => t.completa);
+    return this.tarefas;
   }
+  
 
   // altera o nome e a cor da lista
   editar({nome, cor}) {
