@@ -84,7 +84,7 @@ class DOM {
     
             const tarefasContainer = lista.querySelector('.tarefas')
 
-            listObj.tarefas.forEach(tarefa => {
+            listObj.tarefas.filter(tarefa => tarefa.ativo).forEach(tarefa => {
                 const tarefaEl = this.#renderTarefa(tarefa)
                 tarefasContainer.append(tarefaEl)
             })
@@ -170,6 +170,7 @@ class DOM {
         tarefa.id = taskObj.idTarefa
         tarefa.classList.add(`${taskObj.cor}-borda`)
 
+
         tarefa.querySelector('.tarefa-nome').textContent = taskObj.nome
         tarefa.querySelector('.tarefa-desc').textContent = taskObj.descricao
         tarefa.querySelector('.prioridade').textContent = `${taskObj.prioridade}P`
@@ -234,15 +235,12 @@ class DOM {
 
                 lista.querySelector('.tarefas').innerHTML = ''
                 tarefasVisiveis.forEach(t => {
-                    this.#renderTarefa(t)
+                    const tarefaEl = this.#renderTarefa(t)
+                    lista.querySelector('.tarefas').append(tarefaEl)
                 })
             })
         }, 500)
-        
-
-        
     }
-
 }
 
 class Dialog {
