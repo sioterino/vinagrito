@@ -24,7 +24,7 @@ class DOM {
     #loadListasFromStorage() {
         const novasListas = this.controle.listas
         novasListas.forEach(l => {
-            this.#newList(l)
+            this.#renderizarLista(l)
         })
     }
 
@@ -38,7 +38,7 @@ class DOM {
         const listasVisiveis = this.controle.getListasVisiveis()
         this.pendentes.innerHTML = ''
         listasVisiveis.forEach(lista => {
-            this.#newList(lista)
+            this.#renderizarLista(lista)
         })
     }
 
