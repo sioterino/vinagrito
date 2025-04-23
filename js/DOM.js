@@ -144,6 +144,13 @@ class DOM {
       if (!e.target.closest(".lista") && !e.target.closest("dialog")) {
         // fecha lista
         this.#toggleLista()
+
+        this.pendentes.querySelectorAll(".lista").forEach((l) => {
+          l.querySelector('#searchbar').value = ''
+          l.querySelector('.select-filter').selectedIndex = 0
+          l.querySelector('.select-order').selectedIndex = 0
+      })
+
       }
     })
 
@@ -200,6 +207,8 @@ class DOM {
     // EDITAR TAREFA
     const editarBotao = lista.querySelector(".more-edit")
     editarBotao.addEventListener("click", (e) => {
+
+      console.log("EDIT") // ===============================================================================================================
       e.stopPropagation()
       const listObj = this.controle.listas.find((l) => l.idLista == idLista)
 
@@ -230,12 +239,7 @@ class DOM {
         alvo.classList.add("hide")
 
         if (idLista !== null && l.id === idLista) {
-            alvo.classList.remove("hide")
-
-            // LIMPA VALORES DE FILTRO QUANDO FECHAR / ABRIR LISTA >> CORRIGIR ERROS CASO HAJA TEMPO =======================================
-            // l.querySelector('#searchbar').value = ''
-            // l.querySelector('.select-filter').selectedIndex = 0
-            // l.querySelector('.select-order').selectedIndex = 0
+            alvo.classList.remove("hide")          
         }
     })
   }
@@ -384,13 +388,13 @@ class DOM {
     const moveBotao = tarefa.querySelector(".more-move")
     moveBotao.addEventListener("click", (e) => {
       
-      const moverTarefa = new Dialog(moveBotao, (data) => this.#moverTarefa(data, idTarefa, listObj.idLista, tarefa))
+      const moverTarefa = new Dialog(moveBotao, (data) => this.#moverTarefa(data, idTarefa, listObj.idLista))
       moverTarefa.abrirMover(this.controle.listas, listObj.idLista)
       
     })
   }
   
-  #moverTarefa(data, idTarefa, idOrigem, tarefa) {
+  #moverTarefa(data, idTarefa, idOrigem) {
     this.controle.moverTarefa( idTarefa, idOrigem, data['mover-para'] )
 
     this.loadListasFromStorage()
