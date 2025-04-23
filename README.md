@@ -2,8 +2,17 @@
 <br>
 
 *<h1 align="center"> Projeto 1 / Sistema de Gerenciamento de Tarefas : Vinagrito </h1>*
-*<p align="center"> Programação Orientada a Objetos </p>*
-### 
+*<p align="center"> Programação Orientada a Objetos </p>* <br>
+
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/aa3529c1-91eb-47f1-84e3-88f1828684d6" alt="Pimentão Amarelo" width="50"/>
+  <img src="https://github.com/user-attachments/assets/b5dd4b0d-3942-486b-bed6-ded741bd4dd5" alt="Pimentão Verde" width="50"/>
+  <img src="https://github.com/user-attachments/assets/5403260a-067a-4f0e-9e5a-078f85de44db" alt="Pimentão Vermelho" width="50"/>
+</p>
+
+
+
 <br>
 
 Professor: Adriano Lima  
@@ -11,12 +20,13 @@ Equipe: Júlia Manuela Turnes, Sofia Alves Toreti e Sant Semeghini
 <br> 
 <br>
 
-# *Nosso Projeto*
+
+# <img src="https://github.com/user-attachments/assets/eee58b89-455d-45ae-9d69-ccccccc4ab6c" alt="Podre Claro" width="20"/> *Nosso Projeto*
 Vinagrito é um sistema de gerenciamento de tarefas projetado para acompanhar os usuários em suas diversas atividades diárias. Por meio da criação de listas personalizáveis, o Vinagrito permite que o usuário agrupe tarefas, defina prioridades, prazos, descrições e datas, facilitando a visualização, organização e conclusão de suas metas.
 
 <br>
 
-# *Conceitos de POO utilizados*
+# <img src="https://github.com/user-attachments/assets/eee58b89-455d-45ae-9d69-ccccccc4ab6c" alt="Podre Claro" width="20"/> *Conceitos de POO utilizados*
 
   1. ### Encapsulamento
      1. *Em programação orientada a objetos, o “encapsulamento” refere-se a “esconder” atributos de uma classe de quem for utilizá-la, tornando-os inacessíveis fora da classe. Na implementação do Vinagrito, esse conceito foi utilizado para garantir que a lógica interna estivesse protegida de modificações e/ou acessos indevidos, promovendo a segurança e integridade do código.* <br>
