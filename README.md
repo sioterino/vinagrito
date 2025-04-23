@@ -17,3 +17,9 @@ Vinagrito é um sistema de gerenciamento de tarefas projetado para acompanhar os
 <br>
 
 # *Conceitos de POO utilizados*
+
+  1. ### Encapsulamento
+     1. *Em programação orientada a objetos, o “encapsulamento” refere-se a “esconder” atributos de uma classe de quem for utilizá-la, tornando-os inacessíveis fora da classe. Na implementação do Vinagrito, esse conceito foi utilizado para garantir que a lógica interna estivesse protegida de modificações e ou acessos indevidos, promovendo a segurança e integridade do código.* <br>
+
+     2. *Pode ser visto na classe DOM, a qual utiliza  métodos e propriedades privadas, como #qtdLista, #renderizarLista, #newTask e etc.. (linhas de código 42, 52, 85 em DOM.js)*
+<br>
