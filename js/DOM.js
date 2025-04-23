@@ -44,12 +44,18 @@ class DOM {
     })
   }
 
+  //Lida com a busca de listas ou tarefas com base em um evento de entrada
   handleSearch(e, isList = true, idLista = null) {
+    
+    //obtem valor digitado no campo de busca
     const valor = e.target.value
     
+    //se isList, realiza busca nas listas
     if (isList) {
         this.controle.buscaLista(valor)
         this.#carregaListasVisiveis()
+    
+    //realiza busca dentro de uma lista específica através do id
     } else {
         this.controle.buscaTarefa(idLista, valor)
         this.#carregaTarefasVisiveis(idLista)
@@ -171,6 +177,7 @@ class DOM {
           l.querySelector('.select-order').selectedIndex = 0
       })
 
+      //mostra apenas tarefas ativas na interface
       const tarefas = lista.querySelector('.tarefas')
       tarefas.innerHTML = ''
       listObj.tarefas.forEach(taskObj => {
@@ -210,20 +217,29 @@ class DOM {
         const ordenado = Utils.getListaByID(this.controle.listas, idLista).ordenarTarefa(value)
 
         const tarefas = lista.querySelector('.tarefas')
+
+        //limpa conteúdo do container 
         tarefas.innerHTML = ''
+
+        //Renderiza e adiciona ao container cada tarefa ordenada
         ordenado.forEach(taskObj => {
             const t = this.#renderTarefa(taskObj)
             tarefas.append(t)
         })
     })
-
+  
+    //aplica filtros a tarefas e atualiza interface conforme os filtros
     const filtrar = lista.querySelector('.select-filter')
     filtrar.addEventListener('change', e => {
         const value = e.target.value
+        
+        //seleciona lista por id
         const filtrado = Utils.getListaByID(this.controle.listas, idLista).filtrarTarefa(value)
 
         const tarefas = lista.querySelector('.tarefas')
         tarefas.innerHTML = ''
+
+        //Renderiza e adiciona ao container cada tarefa ordenada
         filtrado.forEach(taskObj => {
             const t = this.#renderTarefa(taskObj)
             tarefas.append(t)

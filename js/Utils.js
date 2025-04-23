@@ -45,6 +45,7 @@ class Utils {
 
     }
 
+    //formata data para o modelo brasileiro
     static formatDate(input, monthMethod = 'short') {
         const data = new Date(input)
     
