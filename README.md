@@ -11,8 +11,6 @@
   <img src="https://github.com/user-attachments/assets/5403260a-067a-4f0e-9e5a-078f85de44db" alt="Pimentão Vermelho" width="50"/>
 </p>
 
-
-
 <br>
 
 Professor: Adriano Lima  
@@ -23,7 +21,14 @@ Equipe: Júlia Manuela Turnes, Sofia Alves Toreti e Sant Semeghini
 
 # <img src="https://github.com/user-attachments/assets/eee58b89-455d-45ae-9d69-ccccccc4ab6c" alt="Podre Claro" width="20"/> *Nosso Projeto*
 Vinagrito é um sistema de gerenciamento de tarefas projetado para acompanhar os usuários em suas diversas atividades diárias. Por meio da criação de listas personalizáveis, o Vinagrito permite que o usuário agrupe tarefas, defina prioridades, prazos, descrições e datas, facilitando a visualização, organização e conclusão de suas metas.
+<br>
+<br>
+<br>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/d97209bd-9aff-4a02-8e68-90c44679be71" alt="Pimentão Amarelo" width="800"/>
+</p>
 
+<br>
 <br>
 
 # <img src="https://github.com/user-attachments/assets/eee58b89-455d-45ae-9d69-ccccccc4ab6c" alt="Podre Claro" width="20"/> *Conceitos de POO utilizados*
