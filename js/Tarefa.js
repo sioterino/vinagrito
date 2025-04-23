@@ -21,7 +21,7 @@ class Tarefa {
         this.ativo = !this.ativo
     }
 
-    editarDetalhes({ nome, descricao, prazo, hora, prioridade }) {
+    editar({ nome, descricao, prazo, hora, prioridade }) {
         this.nome = nome;
         this.descricao = descricao;
         this.prazo = prazo;

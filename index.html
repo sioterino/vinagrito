@@ -136,6 +136,39 @@
         </div>
     </dialog>
 
+    <dialog id="editar-tarefa" class="editar-tarefa-dialog">
+        <div class="wrapper editar-tarefa">
+            <h3>Editar Tarefa</h3>
+            <form>
+                <label>
+                    Nome
+                    <input required type="text" name="nome" id="nome-editar-tarefa" autocomplete="off" spellcheck="false" placeholder="Tarefa sem nome">
+                </label>
+
+                <label>
+                    Descrição
+                    <textarea required name="descricao" id="desc-editar-tarefa" placeholder="Descrição da tarefa..." maxlength="1000"></textarea>
+                </label>
+
+                <label class="select-label">
+                    Prioridade
+                    <select required name="prioridade" id="prioridade-editar-lista">
+                        <option value="1" selected>P1</option>
+                        <option value="2">P2</option>
+                        <option value="3">P3</option>
+                    </select>
+                    <span class="icon arrow">keyboard_arrow_up</span>
+                </label>
+
+                <label>
+                    Prazo
+                    <input required type="datetime-local" name="prazo" id="data-editar-lista">
+                </label>
+                <button type="submit">Salvar Tarefa</button>
+            </form>
+        </div>
+    </dialog>
+
     <dialog id="mover-tarefa" class="mover-tarefa-dialog">
 
       <div class="wrapper mover-tarefa">

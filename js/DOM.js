@@ -16,10 +16,17 @@ class DOM {
       (data, id) => this.#newTask(data, id),
       'criar-tarefa'
     )
+
     this.editarListaDialog = new Dialog(
       null,
       (data, id) => this.#editarLista(id, data),
       'editar-lista'
+    )
+
+    this.editarTarefaDialog = new Dialog(
+      null,
+      (data, idLista, idTarefa) => this.#editarTarefa(idLista, idTarefa, data),
+      'editar-tarefa'
     )
   }
 
@@ -89,7 +96,6 @@ class DOM {
   // =======================================================================================================================================
 
   newList(formObj) {
-    console.log('calls new list')
     // cria nova lista no controle
     const listObj = this.controle.adicionar(formObj) || formObj
     //renderiza lista na página
@@ -164,11 +170,14 @@ class DOM {
           l.querySelector('.select-filter').selectedIndex = 0
           l.querySelector('.select-order').selectedIndex = 0
       })
+
       const tarefas = lista.querySelector('.tarefas')
       tarefas.innerHTML = ''
       listObj.tarefas.forEach(taskObj => {
-          const t = this.#renderTarefa(taskObj)
-          tarefas.append(t)
+          if (taskObj.ativo) {
+            const t = this.#renderTarefa(taskObj)
+            tarefas.append(t)
+          }
       })
       // =================================================================================================================
 
@@ -237,7 +246,6 @@ class DOM {
   }
 
   #editarLista(idLista, newData) {
-    console.log('calls editar lista')
     this.controle.editarLista(newData, idLista)
     this.loadListasFromStorage()
   }
@@ -273,7 +281,6 @@ class DOM {
   // =======================================================================================================================================
 
   #newTask(formObj, idLista) {
-    console.log('calls new task')
     // CRIA NOVA TAREFA
 
     const listObj = Utils.getListaByID(this.controle.listas, idLista)
@@ -348,8 +355,12 @@ class DOM {
     // elemento DIV da lista inteira
     const lista = document.querySelector(`.lista[id="${listObj.idLista}"]`)
 
+    // =============================================================================================
+
     // abre fecha o dropdown MORE
     this.#toggleDropdown(tarefa)
+
+    // =============================================================================================
 
     const uncheck = tarefa.querySelector(".unchecked")
     const check = tarefa.querySelector(".checked")
@@ -374,6 +385,8 @@ class DOM {
       this.controle.saveToLocalStorage()
     })
 
+    // =============================================================================================
+
     // deleta tarefa
     tarefa.querySelector(".more-del").addEventListener("click", (e) => {
       e.stopPropagation()
@@ -385,9 +398,13 @@ class DOM {
       tarefa.remove()
     })
 
-    tarefa.querySelector(".more-edit").addEventListener("click", (e) => {
-      console.log("EDIT") // ===============================================================================================================
-    })
+    // =============================================================================================
+
+    // EDITAR LISTA
+    const editarBotao = tarefa.querySelector(".more-edit")
+    this.editarTarefaDialog.setBotao(editarBotao, listObj, taskObj)
+
+    // =============================================================================================
 
     const moveBotao = tarefa.querySelector(".more-move")
     moveBotao.addEventListener("click", (e) => {
@@ -399,11 +416,18 @@ class DOM {
       moverTarefa.abrirMover(this.controle.listas, listObj.idLista)
       
     })
+
+    // =============================================================================================
   }
 
   #moverTarefa(data, idTarefa, idOrigem) {
     this.controle.moverTarefa( idTarefa, idOrigem, data['mover-para'] )
     this.loadListasFromStorage()
+  }
+
+  #editarTarefa(idLista, idTarefa, newData) {
+    this.controle.editarTarefa(idLista, idTarefa, newData)
+    this.#carregaTarefasVisiveis(idLista)  
   }
 
   // =======================================================================================================================================

@@ -75,6 +75,16 @@ class Controle {
     this.saveToLocalStorage();
   }
 
+  editarTarefa(idLista, idTarefa, data) {
+    const lista = Utils.getListaByID(this.listas, idLista)
+    const tarefa = Utils.getTaskByID(lista.tarefas, idTarefa)
+    
+    tarefa.editar(data)
+    this.saveToLocalStorage();
+
+    return tarefa;
+  }
+
   moverTarefa(idTarefa, idOrigem, idDestino) {
     const origem = Utils.getListaByID(this.listas, idOrigem)
     const destino = Utils.getListaByID(this.listas, idDestino)

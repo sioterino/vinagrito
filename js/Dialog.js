@@ -3,6 +3,7 @@ class Dialog {
     #dialog
     #callback
     #idLista = null
+    #idTarefa = null
     #mode = 'none'  // 'criar-*' | 'editar-*' | 'mover-*'
 
     constructor(botao = null, callback = null, mode = 'none') {
@@ -19,29 +20,31 @@ class Dialog {
         this.form.addEventListener('submit', e => this.#formSubmit(e))
     }
 
-    setBotao(botao, obj = null) {
+    setBotao(botao, listObj = null, taskObj = null) {
         this.#botao = botao
-
+        
         if (!this.#dialog) this.#setDialogByMode()
-
-        if (this.#mode === 'editar-lista') {
+            
+        if (this.#mode === 'editar-tarefa') {
             this.#botao.addEventListener('click', () => {
                 this.#dialog.showModal()
-                if (obj) this.#abrirEdicaoLista(obj)
+                if (taskObj) this.#abrirEdicaoTarefa(taskObj)
+                this.#idLista = listObj?.idLista ?? null
+                this.#idTarefa = taskObj?.idTarefa ?? null
             })
         }
 
-        else if (this.#mode === 'editar-tarefa') {
+        else if (this.#mode === 'editar-lista') {
             this.#botao.addEventListener('click', () => {
                 this.#dialog.showModal()
-                if (obj) this.#abrirEdicaoTarefa(obj)
+                if (listObj) this.#abrirEdicaoLista(listObj)
             })
         }
 
         else {
             this.#botao.addEventListener('click', () => {
                 this.#dialog.showModal()
-                this.#idLista = obj?.idLista ?? null
+                this.#idLista = listObj?.idLista ?? null
             })
         }
     }
@@ -58,7 +61,7 @@ class Dialog {
                 this.#dialog = document.querySelector('#nova-tarefa')
                 break
             case 'editar-tarefa':
-                this.#dialog = document.querySelector('#nova-tarefa') // usa o mesmo dialog!
+                this.#dialog = document.querySelector('#editar-tarefa')
                 break
             case 'mover-tarefa':
                 this.#dialog = document.querySelector('#mover-tarefa')
@@ -91,7 +94,16 @@ class Dialog {
         e.target.reset()
 
         if (this.#callback !== null) {
-            this.#callback(this.data, this.#idLista)
+            
+            if (this.#mode !== 'editar-tarefa') {
+                this.#callback(this.data, this.#idLista)
+            } else {
+                // console.log('lista: ', this.#idLista)
+                // console.log('tarefa: ', this.#idTarefa)
+                // console.log('data: ', this.data)
+                this.#callback(this.data, this.#idLista, this.#idTarefa)
+            }
+
         }
 
         this.#idLista = null
@@ -110,10 +122,10 @@ class Dialog {
 
     #abrirEdicaoTarefa(data) {
         this.#idLista = data.idLista
-        this.form.querySelector('#nome-criar-tarefa').value = data.nome
-        this.form.querySelector('#desc-criar-tarefa').value = data.descricao
-        this.form.querySelector('#prioridade-criar-lista').value = data.prioridade
-        this.form.querySelector('#data-criar-lista').value = data.prazo
+        this.form.querySelector('#nome-editar-tarefa').value = data.nome
+        this.form.querySelector('#desc-editar-tarefa').value = data.descricao
+        this.form.querySelector('#prioridade-editar-lista').value = data.prioridade
+        this.form.querySelector('#data-editar-lista').value = data.prazo
     }
 
     abrirMover(listas, idLista) {
