@@ -38,15 +38,33 @@ Vinagrito é um sistema de gerenciamento de tarefas projetado para acompanhar os
      2. *(linhas de código 17 e 78 DOM.js)*
 <br>
 
-  4. ### 
-     1. *  * <br>
+  4. ### Instanciação de Objetos
+     1. *Em POO, a “instanciação de objetos” consiste na criação de objetos a partir de uma classe, propiciando a modelagem de entidades do mundo real, assim como a flexibilização do código. No Vinagrito, isso foi utilizado através do chamado do construtor do objeto, o qual carrega seu próprio conjunto de dados e comportamentos.* <br>
 
-     2. * Pode ser visto em : <br><br>
+     2. *Pode ser visto em :* <br><br>
         ```
-         
+         // main.js (linhas de código 5 e 10)
+
+            const dom = new DOM();
+            new Dialog(criarLista, callback);
+
+
+        // Controle.js (linha de código 30)
+
+            const novaLista = new Lista(data);
         
-          //(linha de código 14 em DOM.js)
          ```
-       *   *.*
 <br>
 
+  5. ### Relacionamento
+     1. *A “associação” ou “relacionamento” entre duas ou mais classes é um conceito fundamental de POO, onde uma classe utiliza objetos de outra como parte de sua operação. No Vinagrito, isso foi utilizado para garantir a simplificação de testes e instanciações.* <br>
+
+     2. *Pode ser visto em :* <br><br>
+        ```
+         // DOM.js (linhas de código 10, 14 ..)
+
+          this.controle = new Controle();
+          this.taskDialog = new Dialog(...);
+        
+         ```
+<br>
