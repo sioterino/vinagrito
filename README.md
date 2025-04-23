@@ -23,3 +23,24 @@ Vinagrito é um sistema de gerenciamento de tarefas projetado para acompanhar os
 
      2. *Pode ser visto na classe DOM, a qual utiliza  métodos e propriedades privadas, como #qtdLista, #renderizarLista, #newTask e etc.. (linhas de código 42, 52, 85 em DOM.js)*
 <br>
+
+  2. ### Polimorfismo
+     1. *O “polimorfismo” é a maneira com qual objetos de diferentes classes podem responder a mesma situação de formas diferentes, através de heranças, interfaces ou classes abstratas. Na implementação do Vinagrito, esse conceito é visto na classe Dialog, a qual altera-se em diferentes aplicações, expressando a mesma interface com diferentes comportamentos.* <br>
+
+     2. *Pode ser visto em : <br> <br> 
+              “this.taskDialog” → Resulta na criação de uma nova tarefa, chamando #newtask (linha de código 14 e 223 em DOM.js), <br>
+              “editarDialog” → Resulta na edição de uma lista, chamando #editarLista. (linhas de código 215 e 218 em DOM.js)*
+<br>
+
+  3. ### Abstração
+     1. *Outro pilar de POO é a "Abstração", um conceito que visa o foco nos aspectos essenciais do objeto, assim criando um modelo simplificado de algo complexo. No Vinagrito, esse conceito pode ser visto na classe DOM, a qual oculta detalhes da manipulação de listas e tarefas, utilizando-se de métodos públicos como  loadListasFromStorage() e newList(). Usos assim permitem que o código seja segmentado e funcional no contexto de equipe e eficiência do código.* <br>
+
+     2. *(linhas de código 17 e 78 DOM.js)*
+<br>
+
+  4. ### Composição
+     1. *.* <br>
+
+     2. * (linhas de código  em DOM.js)*
+<br>
+
