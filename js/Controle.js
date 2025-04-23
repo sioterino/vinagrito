@@ -46,11 +46,16 @@ class Controle {
     }
   }
 
-  editarLista(idLista, data) {
+  editarLista(data, idLista) {
+
       const lista = Utils.getListaByID(this.listas, idLista);
+
       lista.editar(data);
+
       this.saveToLocalStorage();
+      
       return lista;
+
   }
 
   novaTarefa(data, idLista) {

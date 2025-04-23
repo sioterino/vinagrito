@@ -44,46 +44,6 @@ class Lista {
     return this.tarefas.sort(sorters[criterio] || sorters["none"]);
   }
 
-  // filtrarTarefas(filtros = {}) {
-  //   // desestrutura os filtros recebidos, se algum não for passado assume com uma string vazia     const { descricao = "", data = "" } = filtros;
-  //   const { descricao = "", data = "" } = filtros;
-  //   return this.tarefas.filter((tarefa) => {
-  //     let descricaoCorresponde = true;
-  //     let dataCorresponde = true;
-
-  //     // se foi informado um filtro de descrição
-  //     if (descricao !== "") {
-  //       // converte a descrição da tarefa e o filtro para letras minúsculas,
-  //       const descricaoTarefa = tarefa.descrição.toLowerCase();
-  //       const descricaoFiltro = descricao.toLowerCase();
-
-  //       // verifica se a descrição da tarefa contém o texto do filtro
-  //       descricaoCorresponde = descricaoTarefa.includes(descricaoFiltro);
-  //     }
-
-  //     // se foi informado um filtro de data
-  //     if (data !== "") {
-  //       // converte a data da tarefa e a data do filtro para um formato padrão em string
-  //       const dataTarefa = new Date(tarefa.data).toDateString();
-  //       const dataFiltro = new Date(data).toDateString();
-
-  //       // verifica correspondencia
-  //       dataCorresponde = dataTarefa === dataFiltro;
-  //     }
-
-  //     // retorna a tarefa se pelo menos um dos filtros combinar
-  //     if (descricao !== "" && data !== "") {
-  //       return descricaoCorresponde && dataCorresponde;
-  //     } else if (descricao !== "") {
-  //       return descricaoCorresponde;
-  //     } else if (data !== "") {
-  //       return dataCorresponde;
-  //     }
-
-  //     return true; // se nenhum filtro for passado retorna todas as tarefas
-  //   });
-  // }
-
   filtrarTarefa(criterio = null) {
     if (criterio === 'pendentes') return this.tarefas.filter(t => !t.completa);
     if (criterio === 'completos') return this.tarefas.filter(t => t.completa);
@@ -92,9 +52,9 @@ class Lista {
   
 
   // altera o nome e a cor da lista
-  editar({nome, cor}) {
-    this.nome = nome;
-    this.cor = cor;
+  editar(lista) {
+    this.nome = lista.nome;
+    this.cor = lista.cor;
   }
 
   // move uma tarefa dessa lista pra outra lista

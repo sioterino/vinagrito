@@ -11,8 +11,19 @@ class DOM {
     this.pendentes = document.querySelector(".listas") // container das listas
 
     // caixa de dialogo para criação de novas listas
-    this.taskDialog = new Dialog(null, (data, id) => this.#newTask(data, id))
+    this.taskDialog = new Dialog(
+      null,
+      (data, id) => this.#newTask(data, id),
+      'criar-tarefa'
+    )
+    this.editarListaDialog = new Dialog(
+      null,
+      (data, id) => this.#editarLista(id, data),
+      'editar-lista'
+    )
   }
+
+  // =======================================================================================================================================
 
   loadListasFromStorage() {
     // carrega listas do localStorage para dentro do Controle
@@ -75,7 +86,10 @@ class DOM {
     document.querySelector(".logo").src = img
   }
 
-  newList(formObj, id = null) {
+  // =======================================================================================================================================
+
+  newList(formObj) {
+    console.log('calls new list')
     // cria nova lista no controle
     const listObj = this.controle.adicionar(formObj) || formObj
     //renderiza lista na página
@@ -192,8 +206,6 @@ class DOM {
         const value = e.target.value
         const filtrado = Utils.getListaByID(this.controle.listas, idLista).filtrarTarefa(value)
 
-        console.log(filtrado)
-
         const tarefas = lista.querySelector('.tarefas')
         tarefas.innerHTML = ''
         filtrado.forEach(taskObj => {
@@ -202,34 +214,25 @@ class DOM {
         })
     })
 
-    // =====================================================================================================================================
+    // =============================================================================================
 
-    // EDITAR TAREFA
+    // EDITAR LISTA
     const editarBotao = lista.querySelector(".more-edit")
-    editarBotao.addEventListener("click", (e) => {
+    this.editarListaDialog.setBotao(editarBotao, listObj)
 
-      console.log("EDIT") // ===============================================================================================================
-      e.stopPropagation()
-      const listObj = this.controle.listas.find((l) => l.idLista == idLista)
-
-      const editarDialog = new Dialog(editarBotao, (data, _) =>
-        this.#editarLista(idLista, data)
-      )
-      editarDialog.abrirEdicao(listObj, idLista)
-    })
+    // =============================================================================================
 
     // NOVA TAREFA
     const botao = lista.querySelector(".nova-tarefa")
-    this.taskDialog.setBotao(botao)
+    this.taskDialog.setBotao(botao, listObj)
+
+    // =============================================================================================
   }
 
   #editarLista(idLista, newData) {
-    const novaLista = this.controle.editarLista(idLista, newData)
-    const lista = this.pendentes.querySelector(`.lista[id="${idLista}"]`)
-    lista.remove()
-    // console.log(novaLista)
-    this.#renderizarLista(novaLista)
-    // console.log(this.controle.listas)
+    console.log('calls editar lista')
+    this.controle.editarLista(newData, idLista)
+    this.loadListasFromStorage()
   }
 
   #toggleLista(idLista = null) {
@@ -241,15 +244,6 @@ class DOM {
         if (idLista !== null && l.id === idLista) {
             alvo.classList.remove("hide")          
         }
-    })
-  }
-
-  #toggleDropdown(element) {
-    // abre e fecha elemento genérico 'div.more'
-    element.querySelector(".more").addEventListener("click", (e) => {
-      e.stopPropagation()
-      const dropdown = element.querySelector(".more-dropdown")
-      dropdown.classList.toggle("hide")
     })
   }
 
@@ -269,7 +263,10 @@ class DOM {
     lista.querySelector(".lista-status").textContent = `${qtdDone}/${qtdTask}`
   }
 
+  // =======================================================================================================================================
+
   #newTask(formObj, idLista) {
+    console.log('calls new task')
     // CRIA NOVA TAREFA
 
     const listObj = Utils.getListaByID(this.controle.listas, idLista)
@@ -387,17 +384,30 @@ class DOM {
 
     const moveBotao = tarefa.querySelector(".more-move")
     moveBotao.addEventListener("click", (e) => {
-      
-      const moverTarefa = new Dialog(moveBotao, (data) => this.#moverTarefa(data, idTarefa, listObj.idLista))
+      const moverTarefa = new Dialog(
+        moveBotao,
+        (data) => this.#moverTarefa(data, idTarefa, listObj.idLista),
+        'mover-tarefa'
+      )
       moverTarefa.abrirMover(this.controle.listas, listObj.idLista)
       
     })
   }
-  
+
   #moverTarefa(data, idTarefa, idOrigem) {
     this.controle.moverTarefa( idTarefa, idOrigem, data['mover-para'] )
-
     this.loadListasFromStorage()
+  }
+
+  // =======================================================================================================================================
+  
+  #toggleDropdown(element) {
+    // abre e fecha elemento genérico 'div.more'
+    element.querySelector(".more").addEventListener("click", (e) => {
+      e.stopPropagation()
+      const dropdown = element.querySelector(".more-dropdown")
+      dropdown.classList.toggle("hide")
+    })
   }
 }
 

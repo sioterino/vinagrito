@@ -79,6 +79,30 @@
         </div>
     </dialog>
 
+    <dialog id="editar-lista" class="editar-lista-dialog">
+        <div class="wrapper editar-lista">
+            <h3>Editar Lista</h3>
+            <form>
+                <label>
+                    Nome
+                    <input required type="text" name="nome" id="nome-editar-lista" autocomplete="off" spellcheck="false" placeholder="Lista sem nome">
+                </label>
+                <label class="select-label">
+                    Cor
+                    <select required name="cor" id="cor-editar-lista">
+                        <option value="vermelho" selected>Vermelho</option>
+                        <option value="amarelo">Amarelo</option>
+                        <option value="verde">Verde</option>
+                        <option value="azul">Azul</option>
+                        <option value="roxo">Roxo</option>
+                    </select>
+                    <span class="icon arrow">keyboard_arrow_up</span>
+                </label>
+                <button type="submit">Salvar Lista</button>
+            </form>
+        </div>
+    </dialog>
+
     <dialog id="nova-tarefa" class="criar-tarefa-dialog">
         <div class="wrapper criar-tarefa">
             <h3>Criar Nova Tarefa</h3>
@@ -112,7 +136,7 @@
         </div>
     </dialog>
 
-    <dialog id="mover-lista" class="mover-lista-dialog">
+    <dialog id="mover-tarefa" class="mover-tarefa-dialog">
 
       <div class="wrapper mover-tarefa">
         <h3>Mover Tarefa</h3>
@@ -131,34 +155,34 @@
 
     <template id="lista-template">
 
-        <div class="lista click">
-          <div class="lista-head click">
-            <div class="head-left click">
-              <span class="icon circle click">circle</span>
-              <h4 class="lista-nome" click>Lista Sem Nome</h4>
+        <div class="lista">
+          <div class="lista-head">
+            <div class="head-left">
+              <span class="icon circle">circle</span>
+              <h4 class="lista-nome">Lista Sem Nome</h4>
             </div>
-            <div class="head-right click">
-              <p class="lista-status click">0/0</p>
-              <span class="icon more click">more_horiz</span>
+            <div class="head-right">
+              <p class="lista-status">0/0</p>
+              <span class="icon more">more_horiz</span>
             </div>
           </div>
 
-          <ul class="more-dropdown click hide">
-            <li class="more-edit more-li nova-lista click">
-              <span class="icon edit click">edit</span>
-              <p class="click">Editar</p>
+          <ul class="more-dropdown hide">
+            <li class="more-edit more-li editar-lista">
+              <span class="icon edit">edit</span>
+              <p>Editar</p>
             </li>
-            <li class="more-del more-li click">
-              <span class="icon delete click">delete</span>
-              <p class="click">Apagar</p>
+            <li class="more-del more-li">
+              <span class="icon delete">delete</span>
+              <p>Apagar</p>
             </li>
           </ul>
 
-          <div class="content click hide">
-            <div class="filtros click">
-              <div class="select-wrapper click">
+          <div class="content hide">
+            <div class="filtros">
+              <div class="select-wrapper">
                 <!-- filtro status -->
-                <div class="filter-wrapper click">
+                <div class="filter-wrapper">
                   <select class="select-filter filtros-select">
                     <option value="" selected disabled>Filtrar</option>
 
@@ -170,7 +194,7 @@
                 </div>
 
                 <!-- filtro prioridade -->
-                <div class="filter-wrapper click">
+                <div class="filter-wrapper">
                   <select class="select-order filtros-select">
                     <option value="" selected disabled>Ordenar</option>
 
@@ -188,10 +212,10 @@
               </div>
 
               <!-- barra de pesquisa -->
-              <div class="searchbar click">
-                <span class="icon glass click">search</span>
+              <div class="searchbar">
+                <span class="icon glass">search</span>
                 <input
-                  class="barra-de-pesquisa click"
+                  class="barra-de-pesquisa"
                   type="text"
                   id="searchbar"
                   name="searchbar"
@@ -203,16 +227,16 @@
             </div>
 
             <!-- container de tarefas -->
-            <div class="tarefas click">
+            <div class="tarefas">
 
                 <!-- populado com JS -->
 
             </div>
 
             <!-- botão nova tarefa -->
-            <div class="botao-criar nova-tarefa click">
-              <span class="icon add click">add</span>
-              <p class="click">Criar nova tarefa</p>
+            <div class="botao-criar nova-tarefa">
+              <span class="icon add">add</span>
+              <p>Criar nova tarefa</p>
             </div>
           </div>
         </div>
@@ -229,7 +253,7 @@
             </div>
 
             <ul class="more-dropdown hide">
-                <li class="more-edit more-li">
+                <li class="more-edit more-li editar-tarefa">
                   <span class="icon edit">edit</span>
                   <p>Editar</p>
                 </li>

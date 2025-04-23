@@ -1,109 +1,124 @@
 class Dialog {
-    
     #botao
     #dialog
     #callback
     #idLista = null
+    #mode = 'none'  // Mode: 'criar' | 'editar' | 'mover'
     
-    constructor(botao, callback = null) {
+    constructor(botao = null, callback = null, mode = 'none') {
         this.#callback = callback
+        this.#mode = mode
         this.data = {}
-        
+
         if (botao) {
             this.setBotao(botao)
         }
 
-        if (botao?.classList.contains('more-move')) {
-            this.#dialog = document.querySelector('#mover-lista')
-
-        } else if (botao?.classList.contains('nova-lista')) {
-            this.#dialog = document.querySelector('#nova-lista')
-
-        } else {
-            this.#dialog = document.querySelector('#nova-tarefa')
-        }
-        
-        this.form = this.#dialog.querySelector('form')
+        this.#setDialogByMode()
         this.#dialog.addEventListener('click', e => this.#fecharModal(e))
         this.form.addEventListener('submit', e => this.#formSubmit(e))
     }
-    
-    setBotao(botao) {
+
+    setBotao(botao, listObj = null) {
         this.#botao = botao
-        this.#botao.addEventListener('click', e => {
-            this.#dialog.showModal()
-            this.#idLista = e.target.closest('.lista')?.id ?? null
-        })
+
+        if (!this.#dialog) this.#setDialogByMode()
+
+        if (this.#mode === 'editar-lista') {
+            this.#botao.addEventListener('click', () => {
+                this.#dialog.showModal()
+                if (listObj) this.#abrirEdicaoLista(listObj)
+            })
+        } else {
+            this.#botao.addEventListener('click', () => {
+                this.#dialog.showModal()
+                this.#idLista = listObj?.idLista ?? null
+            })
+        }
     }
-    
+
+    #setDialogByMode() {
+        switch (this.#mode) {
+            case 'criar-lista':
+                this.#dialog = document.querySelector('#nova-lista')
+                break
+            case 'editar-lista':
+                this.#dialog = document.querySelector('#editar-lista')
+                break
+            case 'criar-tarefa':
+                this.#dialog = document.querySelector('#nova-tarefa')
+                break
+            case 'mover-tarefa':
+                this.#dialog = document.querySelector('#mover-tarefa')
+                break
+        }
+
+        this.form = this.#dialog.querySelector('form')
+    }
+
     #fecharModal(e) {
         if (e.target.tagName.toLowerCase() === 'dialog') {
             this.#dialog.close()
             this.form.reset()
         }
-        if (e.target.id === 'mover-lista') {
+
+        // limpar o select de mover tarefa
+        if (this.#mode === 'move-tarefa') {
             this.#dialog.querySelector('#mover-para').innerHTML = ''
         }
     }
-    
+
     #formSubmit(e) {
         e.preventDefault()
-        
-        const input = new FormData(this.form)
 
+        const input = new FormData(this.form)
         input.forEach((val, key) => {
             this.data[key] = val
         })
-        
+
         this.#dialog.close()
         e.target.reset()
-        
+
         if (this.#callback !== null) {
             this.#callback(this.data, this.#idLista)
         }
-        
-        this.#idLista = null
-        
-        const moverPara = this.#dialog.querySelector('#mover-para')
-        if (moverPara) moverPara.innerHTML = ''
 
+        this.#idLista = null
+
+        if (this.#mode === 'move-tarefa') {
+            const moverPara = this.#dialog.querySelector('#mover-para')
+            if (moverPara) moverPara.innerHTML = ''
+        }
     }
 
-    abrirEdicao(data, idLista) {
-        this.#idLista = idLista
-        this.#dialog.showModal()
-    
-        for (const [key, value] of Object.entries(data)) {
-            const field = this.form.querySelector(`[name="${key}"]`)
-            if (field) field.value = value
-        }
+    #abrirEdicaoLista(data) {
+        this.#idLista = data.idLista
+        this.form.querySelector('#nome-editar-lista').value = data.nome
+        this.form.querySelector('#cor-editar-lista').value = data.cor
     }
 
     abrirMover(listas, idLista) {
         this.#idLista = idLista
 
-        const nomesID = listas.map(l => {
-            return { nome: l.nome, id: l.idLista }
-        })
         const select = this.#dialog.querySelector('#mover-para')
-        nomesID.forEach(l =>  {
-            const el = document.createElement('option')
-            el.value = l.id
-            el.textContent = l.nome
+        listas.forEach(l => {
+            if (l.ativo) {
+                const option = document.createElement('option')
+                option.value = l.idLista
+                option.textContent = l.nome
 
-            if (l.id === idLista) {
-                el.selected = true;
-                el.disabled = true;
-                select.prepend(el)
-
-            } else {
-                select.append(el)
+                if (l.idLista === idLista) {
+                    option.disabled = true
+                    option.selected = true
+                    select.prepend(option)
+                } else {
+                    select.appendChild(option)
+                }
             }
         })
 
         this.#dialog.showModal()
     }
-    
 }
 
 export { Dialog }
