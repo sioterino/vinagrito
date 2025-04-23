@@ -164,6 +164,13 @@ class DOM {
           l.querySelector('.select-filter').selectedIndex = 0
           l.querySelector('.select-order').selectedIndex = 0
       })
+      const tarefas = lista.querySelector('.tarefas')
+      tarefas.innerHTML = ''
+      listObj.tarefas.forEach(taskObj => {
+          const t = this.#renderTarefa(taskObj)
+          tarefas.append(t)
+      })
+      // =================================================================================================================
 
       }
     })

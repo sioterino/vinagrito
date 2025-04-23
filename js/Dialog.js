@@ -3,8 +3,8 @@ class Dialog {
     #dialog
     #callback
     #idLista = null
-    #mode = 'none'  // Mode: 'criar' | 'editar' | 'mover'
-    
+    #mode = 'none'  // 'criar-*' | 'editar-*' | 'mover-*'
+
     constructor(botao = null, callback = null, mode = 'none') {
         this.#callback = callback
         this.#mode = mode
@@ -19,7 +19,7 @@ class Dialog {
         this.form.addEventListener('submit', e => this.#formSubmit(e))
     }
 
-    setBotao(botao, listObj = null) {
+    setBotao(botao, obj = null) {
         this.#botao = botao
 
         if (!this.#dialog) this.#setDialogByMode()
@@ -27,12 +27,21 @@ class Dialog {
         if (this.#mode === 'editar-lista') {
             this.#botao.addEventListener('click', () => {
                 this.#dialog.showModal()
-                if (listObj) this.#abrirEdicaoLista(listObj)
+                if (obj) this.#abrirEdicaoLista(obj)
             })
-        } else {
+        }
+
+        else if (this.#mode === 'editar-tarefa') {
             this.#botao.addEventListener('click', () => {
                 this.#dialog.showModal()
-                this.#idLista = listObj?.idLista ?? null
+                if (obj) this.#abrirEdicaoTarefa(obj)
+            })
+        }
+
+        else {
+            this.#botao.addEventListener('click', () => {
+                this.#dialog.showModal()
+                this.#idLista = obj?.idLista ?? null
             })
         }
     }
@@ -48,6 +57,9 @@ class Dialog {
             case 'criar-tarefa':
                 this.#dialog = document.querySelector('#nova-tarefa')
                 break
+            case 'editar-tarefa':
+                this.#dialog = document.querySelector('#nova-tarefa') // usa o mesmo dialog!
+                break
             case 'mover-tarefa':
                 this.#dialog = document.querySelector('#mover-tarefa')
                 break
@@ -62,7 +74,6 @@ class Dialog {
             this.form.reset()
         }
 
-        // limpar o select de mover tarefa
         if (this.#mode === 'move-tarefa') {
             this.#dialog.querySelector('#mover-para').innerHTML = ''
         }
@@ -95,6 +106,14 @@ class Dialog {
         this.#idLista = data.idLista
         this.form.querySelector('#nome-editar-lista').value = data.nome
         this.form.querySelector('#cor-editar-lista').value = data.cor
+    }
+
+    #abrirEdicaoTarefa(data) {
+        this.#idLista = data.idLista
+        this.form.querySelector('#nome-criar-tarefa').value = data.nome
+        this.form.querySelector('#desc-criar-tarefa').value = data.descricao
+        this.form.querySelector('#prioridade-criar-lista').value = data.prioridade
+        this.form.querySelector('#data-criar-lista').value = data.prazo
     }
 
     abrirMover(listas, idLista) {
