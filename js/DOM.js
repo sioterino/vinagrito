@@ -265,8 +265,10 @@ class DOM {
     lista.querySelector(".lista-status").textContent = `${qtdDone}/${qtdTask}`
   }
 
-  #newTask(formObj, listObj) {
+  #newTask(formObj, idLista) {
     // CRIA NOVA TAREFA
+
+    const listObj = Utils.getListaByID(this.controle.listas, idLista)
 
     formObj.completo = false
     formObj.isShown = true

@@ -42,7 +42,7 @@ class Dialog {
             this.form.reset()
         }
         if (e.target.id === 'mover-lista') {
-            this.#dialog.querySelector('#mover-para').textContent = ''
+            this.#dialog.querySelector('#mover-para').innerHTML = ''
         }
     }
     
@@ -63,7 +63,10 @@ class Dialog {
         }
         
         this.#idLista = null
-        this.#dialog.querySelector('#mover-para').textContent = ''
+        
+        const moverPara = this.#dialog.querySelector('#mover-para')
+        if (moverPara) moverPara.innerHTML = ''
+
     }
 
     abrirEdicao(data, idLista) {
