@@ -12,4 +12,6 @@ new Dialog(criarLista, (data, id) => dom.newList(data, id))
 dom.loadListasFromStorage()
 document.querySelector("#pesquisa").addEventListener("input", (e) => dom.handleSearch(e))
 
-// dom.pageInit()
+// document.querySelector('body').addEventListener('click', e => {
+//     console.log(e.target)
+// })

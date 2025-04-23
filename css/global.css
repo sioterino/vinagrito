@@ -3,13 +3,13 @@
 
 
 /* Style Sheets */
-@import url(/css/cores.css);
-@import url(/css/dialog.css);
 @import url(/css/global.css);
+@import url(/css/dialog.css);
 @import url(/css/header.css);
-@import url(/css/lista.css);
 @import url(/css/listas-base.css);
+@import url(/css/lista.css);
 @import url(/css/tarefas.css);
+@import url(/css/cores.css);
 
 :root {
     --fundo: #000120;
