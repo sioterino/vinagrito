@@ -38,9 +38,15 @@ Vinagrito é um sistema de gerenciamento de tarefas projetado para acompanhar os
      2. *(linhas de código 17 e 78 DOM.js)*
 <br>
 
-  4. ### Composição
-     1. *.* <br>
+  4. ###  Funções de Callback (Delegação de Comportament)
+     1. *Em POO as “Callback functions” são consideradas um mecanismo para reutilização de código, no qual classes ou objetos não realizam diretamente uma função, e sim, delegam a implementação de seu comportamento específico a outro objeto. Na implementação do Vinagrito, isso foi utilizado devido a promoção de classes mais genéricas e flexíveis, com comportamentos customizáveis. * <br>
 
-     2. * (linhas de código  em DOM.js)*
+     2. * Pode ser visto em : <br><br>
+        ```
+          this.taskDialog = new Dialog(null, (data, id) => this.#newTask(data, id));
+        
+          //(linha de código 14 em DOM.js)
+         ```
+       *   *Nesse caso, a classe DOM está definindo a função, e a classe Dialog está chamando-a.*
 <br>
 
