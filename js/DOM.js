@@ -310,7 +310,9 @@ class DOM {
     desc.classList.add(`${taskObj.cor}-fundo`)
 
     // PRIORIDDE
-    tarefa.querySelector(".prioridade").textContent = `${taskObj.prioridade}P`
+    const prioridade = tarefa.querySelector(".prioridade")
+    prioridade.textContent = `${taskObj.prioridade}P`
+    prioridade.classList.add(`p${taskObj.prioridade}`)
     // PRAZO
     tarefa.querySelector(".prazo").textContent = Utils.formatDate(taskObj.prazo)
 
