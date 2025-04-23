@@ -4,8 +4,6 @@ import { Dialog } from "./Dialog.js"
 
 class DOM {
 
-  #qtdLista = 0 // contador de listas
-
   constructor() {
     this.controle = new Controle() // controle de listas
     this.pendentes = document.querySelector(".listas") // container das listas
@@ -61,6 +59,7 @@ class DOM {
         this.#carregaTarefasVisiveis(idLista)
     }
 
+    this.#updateContadorListas()
   }
 
   #carregaListasVisiveis() {
@@ -128,7 +127,7 @@ class DOM {
     // INICIALIZA EVENT LISTENERS
     this.#listInit(lista, listObj)
     // atualiza contador de listas
-    this.#addQtdLista()
+    this.#updateContadorListas()
 
     // carrega array de tarefas da lista
     const tarefasVisiveis = this.controle.getTarefasVisiveis(listObj.idLista)
@@ -199,7 +198,7 @@ class DOM {
       // deleta uma lista
       this.controle.remover(idLista)
       lista.remove()
-      this.#addQtdLista(false)
+      this.#updateContadorListas()
     })
 
     // =====================================================================================================================================
@@ -278,12 +277,10 @@ class DOM {
     })
   }
 
-  #addQtdLista(add = true) {
+  #updateContadorListas() {
     // atualiza contador de LISTAS
-    // se (add == true) : ++
-    // se (add == false) : --
-    this.#qtdLista += add ? 1 : -1
-    document.querySelector(".fazendo .qtd-listas").textContent = this.#qtdLista
+    const qtdLista = this.controle.listas.filter( l => l.ativo && l.isShown ).length
+    document.querySelector(".fazendo .qtd-listas").textContent = qtdLista
   }
 
   #updateCompletas(lista, listObj) {
